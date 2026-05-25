@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react';
 import styles from './sidebar.module.css'
+import TwoRange from '../range/range';
 
 export default function Sidebar(
     { genres, platforms, companies, themes, modes }: {
@@ -19,6 +20,7 @@ export default function Sidebar(
 
     const [OpenSections, setOpenSections] = useState({
         genre: true,
+        year: true,
         platform: true,
         company: true,
         theme: true,
@@ -104,7 +106,16 @@ export default function Sidebar(
                     </div>
                 </div>
             </div>
+            <div>
+                <div className={styles.dropdownHeader} onClick={() => toggleSection('year')}>
+                    <h4>Release Year</h4>
+                    <span>{OpenSections.year ? "▼" : "▶"}</span>
+                </div>
 
+                <div className={`${styles.dropdown} ${OpenSections.year ? styles.open : styles.closed}`}>
+                    <TwoRange />
+                </div>
+            </div>
             <div>
                 <div className={styles.dropdownHeader} onClick={() => toggleSection('theme')}>
                     <h4>Theme</h4>
@@ -120,6 +131,13 @@ export default function Sidebar(
                             </li>
                         ))}
                     </ul>
+
+                    <div style={{ display: OpenSections.theme ? 'block' : 'none' }}>
+                        {Themes.length != themes.length ?
+                            <p onClick={() => setThemes(themes)}>▼ Show More</p> :
+                            <p onClick={() => setThemes(themes.slice(0, 5))}>▲ Show Less</p>
+                        }
+                    </div>
                 </div>
             </div>
             <div>
@@ -129,7 +147,7 @@ export default function Sidebar(
                 </div>
 
                 <div className={`${styles.dropdown} ${OpenSections.mode ? styles.open : styles.closed}`}>
-                    <ul>                        
+                    <ul>
                         {modes && modes.map((mode: Mode) => (
                             <li key={mode.id}>
                                 <input type="checkbox" id={mode.id.toString()} name={mode.name} value={mode.id} />

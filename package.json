@@ -21,7 +21,8 @@
     "nodemon": "^3.1.14",
     "openai": "^6.39.0",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "react-range": "^1.10.0"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.100.14",
