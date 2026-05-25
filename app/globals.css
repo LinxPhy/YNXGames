@@ -27,6 +27,11 @@
     scroll-behavior: smooth;
 } */
 
+html {
+    scrollbar-width: thin;
+    scrollbar-color: #ffffff4d var(--background);
+}
+
 
 html,
 body {
@@ -102,5 +107,22 @@ button {
 
 ul {
     list-style: none;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ffffff4d;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a3a3a34d;
 }
 
