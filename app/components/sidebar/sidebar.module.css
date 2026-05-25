@@ -1,0 +1,123 @@
+.sidebar {
+    padding: 10px;
+    width: 250px;
+    border-right: 1px solid var(--dark);
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    /* overflow-y: auto; */
+}
+
+.sidebar > div {
+    background-color: var(--dark);
+    padding: 15px;
+    border-bottom: 1px solid #414040;
+    /* border-radius: 0.5rem; */
+}
+
+.sidebar ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.sidebar ul li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dropdownHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropdownHeader span {
+    color: var(--white);
+}
+
+.sidebar h4 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    padding: 5px 0;
+}
+
+
+.sidebar input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 14px;
+    height: 14px;
+
+    border: 1px solid #414040;
+    border-radius: 3px;
+    background: transparent;
+    cursor: pointer;
+
+    display: inline-grid;
+    place-content: center;
+}
+
+.sidebar input[type="checkbox"]:checked {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.sidebar input[type="checkbox"]::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    transform: scale(0);
+    transition: transform 0.1s ease;
+
+    clip-path: polygon(
+        14% 44%,
+        0 65%,
+        50% 100%,
+        100% 16%,
+        80% 0,
+        43% 62%
+    );
+
+    background: white;
+}
+
+.sidebar input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+.sidebar label {
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.dropdown {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+}
+
+.dropdown ul {
+    overflow: hidden;
+}
+
+.closed.dropdown {
+    grid-template-rows: 0fr;
+
+}
+
+.dropdown.open {
+    grid-template-rows: 1fr;
+}
+
+.dropdown p {
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-top: 5px;
+    /* text-decoration: underline; */
+}
+
+

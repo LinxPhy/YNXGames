@@ -73,32 +73,48 @@ interface Video {
     url: string;
 }
 
+interface Theme {
+    id: number;
+    name: string;
+    slug: string;
+    url: string;
+    created_at: Date;
+    updated_at: Date;
+}
 
+interface Collection {
+    id: number;
+    name: string;
+    slug: string;
+    url: string;
+    created_at: Date;
+    updated_at: Date;
+}
 
-// CREATE TABLE themes (
-//     id INT PRIMARY KEY,
-//     name varchar(255),
-//     slug varchar(255),
-//     url varchar(255),
-//     created_at DATETIME,
-//     updated_at DATETIME,, 
-//     url varchar(255),
-// );
+interface Franchise {
+    id: number;
+    name: string;
+    slug: string;
+    url: string;
+    created_at: Date;
+    updated_at: Date;
+}
 
-// CREATE TABLE games (
-//     id INT PRIMARY KEY,
-//     name varchar(255),
-//     parent_game INT,
-//     slug varchar(255),
-//     summary TEXT,
-//     hypes INT,
-//     released_date INT, -- loop through the release_dates table to get the release date 
-//     rating INT,
-//     rating_count INT,
-//     url varchar(255),
-// )
-
-// CREATE TABLE similar_games (
-//     game INT,
-//     similar_game INT,
-// )
+interface Game {
+    id: number;
+    name: string;
+    parent_game: number;
+    slug: string;
+    cover: number;
+    storyline: string;
+    summary: string;
+    hypes: number;
+    first_release_date: Date;
+    rating: number;
+    rating_count: number;
+    total_rating: number;
+    total_rating_count: number;
+    url: string;
+    created_at: Date;
+    updated_at: Date;
+}

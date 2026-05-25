@@ -2,6 +2,7 @@ require('dotenv').config({ quiet: true })
 const express = require('express');
 const cors = require('cors')
 const scripts = require('./routes/scripts')
+const games = require('./routes/games')
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.urlencoded({ extended: true }))
 app.set("trust proxy", 1);
 
 app.use(scripts)
+app.use(games)
 
 const PORT = process.env.PORT || 3001
 
