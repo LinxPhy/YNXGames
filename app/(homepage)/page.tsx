@@ -1,10 +1,12 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import axios from 'axios'
+import HomePage from './homepage';
 
-export default function Home() {
+export default async function Home() {
+
+  const request = await axios.get(`${process.env.SERVER_URL}/games`);
+  const data = request.data;
+
   return (
-      <div className={styles.content}>
-        
-      </div>
+    <HomePage games={data.games} /> 
   );
 }

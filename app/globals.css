@@ -21,6 +21,9 @@
     --green: #44d867;
     --orange: #d58b03;
     --red: #ff0826;
+    --grad-1: #0c0c0ee6;
+    --grad-2: #17171ae6;
+    --grad-3: #00000000;
 }
 
 /* html {
@@ -126,3 +129,6 @@ ul {
     background: #a3a3a34d;
 }
 
+main {
+    display: flex;
+}

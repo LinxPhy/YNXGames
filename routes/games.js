@@ -62,4 +62,32 @@ app.get('/api/filters', async (req, res) => {
 
 });
 
+
+app.get('/api/games', async (req, res) => {
+
+    try {
+
+        const query = `
+            SELECT g.*, c.url AS image, c.width, c.height FROM games g
+            LEFT JOIN covers c ON g.id = c.game
+            WHERE g.id IN (99, 115, 112, 128, 225, 622, 986, 989, 967, 912, 791, 675, 594, 595, 599)
+        `
+
+        const [games] = await pool.promise().query(query);
+
+        games.map((game) => {
+            game.image = game.image.replace('t_thumb', 't_1080p');
+            game.image = 'https:' + game.image
+
+        })
+
+        res.send({ games });
+
+    } catch (error) {
+        console.error('Error fetching games:', error);
+        res.status(500).send({ error: 'Failed to fetch games' });
+    }
+
+})
+
 module.exports = app;

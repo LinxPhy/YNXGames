@@ -117,4 +117,7 @@ interface Game {
     url: string;
     created_at: Date;
     updated_at: Date;
+    image: string;
+    width: number;
+    height: number;
 }

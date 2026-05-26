@@ -1,0 +1,132 @@
+
+
+.content{
+    padding: 0.5rem;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.searchContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.searchWrapper{
+    position: relative;
+    max-width: 600px;  
+    width: 100%;  
+}
+
+.search{
+    width: 100%;
+    padding: 1rem 0.8rem;
+    border: 1px solid var(--dark);
+    border-radius: 0.5rem;
+    background-color: transparent;
+    color: var(--light);
+    font-size: 1rem;
+}
+
+.searchButton{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    height: 70%;
+}
+
+.searchButton:hover{
+    background-color: var(--white);
+    color: var(--primary);
+}
+
+.games{
+    margin-top: 2rem;
+}
+
+.games h2{
+    text-transform: uppercase;
+}
+
+.gamesContainer{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.gamesContainer .gameImage{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    /* object-position: top; */
+}
+
+.gameCard{
+    width: 220px;
+    height: 220px;
+    background-color: var(--dark);
+    border-radius: 1rem;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    min-width: 160px;
+}
+
+.gameCard::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    pointer-events: none;
+    z-index: 1;
+
+    background: linear-gradient(0deg,
+        var(--grad-1) -9.48%,
+        var(--grad-2) 70.08%,
+        var(--grad-3) 99.2%);
+
+}
+
+.gameCard h3{
+    font-size: 0.8rem;
+    color: var(--white);
+    font-weight: 800;
+}
+
+.gameInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.2rem;
+
+    height: 100%;
+    width: 100%;
+    position: relative;
+    padding: 0.8rem;
+    z-index: 2;
+}
+
+.gameRating{
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    justify-content: flex-end;
+}
+
+.gameRating p{
+    font-size: 0.8rem;
+    
+}
