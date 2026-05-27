@@ -1,8 +1,8 @@
 'use client'
 import Image from "next/image";
 import styles from './categories.module.css'
-import useEmblaCarousel from 'embla-carousel-react';
 import Carousel from "../carousel/carousel";
+import Link from "next/link";
 
 export default function Categories() {
 
@@ -13,17 +13,7 @@ export default function Categories() {
         { id: 4, name: "Shooting", url: "/images/shooting.jpg", slug: "shooting", advert: "Action-Packed Shootouts" },
         { id: 5, name: "Racing", url: "/images/racing.jpg", slug: "racing", advert: "Speedy Racing Adventures" },
         { id: 6, name: "Survival", url: "/images/survival.jpg", slug: "survival", advert: "Challenging Experiences" },
-        // { id: 7, name: "Shooting", url: "/images/shooting.jpg", slug: "shooting", advert: "Action-Packed Shootouts" },
-        // { id: 8, name: "Racing", url: "/images/racing.jpg", slug: "racing", advert: "Speedy Racing Adventures" },
-        // { id: 9, name: "Survival", url: "/images/survival.jpg", slug: "survival", advert: "Challenging Experiences" },
     ]
-
-    const [emblaRef, emblaApi] = useEmblaCarousel({
-        align: 'start',
-        slidesToScroll: 'auto',
-        containScroll: 'trimSnaps',
-        loop: true
-    });
 
     return (
         <div className={styles.container}>
@@ -33,40 +23,27 @@ export default function Categories() {
                 <span>Start by selecting a genre</span>
             </div>
 
-            {/* <Carousel>
-            </Carousel> */}
-
-            <div ref={emblaRef} className={styles.viewport}>
+            <Carousel>
                 <div className={styles.categories}>
                     {images.map((image) => (
-                        <div className={styles.category} key={image.id}>
+                        <Link href={`/games/${image.slug}`}
+                            className={styles.category}
+                            key={image.id}
+                            style={{
+                                flexGrow: 0,
+                                flexShrink: 0,
+                                flexBasis: 'clamp(180px, 25vw, 240px)',
+                                aspectRatio: '3/4',
+                            }}
+                        >
                             <Image src={image.url} width={784} height={1168} alt={image.name} />
                             <div className={styles.info}>
                                 <h4>{image.advert}</h4>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
-            </div>
-
-            <button onClick={() => emblaApi?.scrollPrev()}>
-                Prev
-            </button>
-
-            <button onClick={() => emblaApi?.scrollNext()}>
-                Next
-            </button>
-
-            {/* <div className={styles.categories}>
-                {images.map((image) => (
-                    <div className={styles.category} key={image.id}>
-                        <Image src={image.url} width={784} height={1168} alt={image.name} />
-                        <div className={styles.info}>
-                            <h4>{image.advert}</h4>
-                        </div>
-                    </div>
-                ))}
-            </div> */}
+            </Carousel>
 
         </div>
     )

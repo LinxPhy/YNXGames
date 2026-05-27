@@ -1,32 +1,32 @@
-.carousel {
+
+
+.viewport{
+    overflow: hidden;
+    width: 100%;
     position: relative;
 }
 
-
-.carousel:hover .navigation {
+.viewport .navigation{
+    position: absolute;
+    width: 40px;
+    height: 100%;
+    background-color: hsla(0, 0%, 0%, 0.502);
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-
-.navigation {
-    position: absolute;
-    width: 30px;
-    height: 100%;
-    background-color: hsla(0, 0%, 0%, 0.502);
     cursor: pointer;
-    display: none;
-    /* pointer-events: none;
-    transition: opacity 0.3s ease; */
 }
 
-.left {
+.viewport .navigation:hover{
+    background-color: hsla(0, 0%, 0%, 0.7);
+}
+
+.left{
     top: 0;
     left: 0;
 }
 
-.right {
+.right{
     top: 0;
     right: 0;
 }

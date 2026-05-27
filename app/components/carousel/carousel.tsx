@@ -1,41 +1,62 @@
 'use client'
-// import LeftArrow from "@/app/icons/left-arrow.png"
-// import RightArrow from "@/app/icons/right-arrow.png"
-import Image from "next/image"
-import styles from "./carousel.module.css"
-import { Children, cloneElement, isValidElement, useRef } from "react";
+import useEmblaCarousel from 'embla-carousel-react';
+import styles from './carousel.module.css'
+import { useEffect, useState } from 'react';
 
-export default function Carousel({ children }: { children: React.ReactNode }) {
+export default function Carousel(
+    { children }:
+        { children: React.ReactNode }
+) {
 
-    const wrapper = useRef<HTMLDivElement>(null)
-    const scrollContainer = useRef<HTMLDivElement>(null)
 
-    const scrollX = (amount: number) => {
+    const [canScrollPrev, setCanScrollPrev] = useState(false);
+    const [canScrollNext, setCanScrollNext] = useState(false);
+    const [emblaRef, emblaApi] = useEmblaCarousel({
+        align: 'start',
+        slidesToScroll: 'auto',
+        containScroll: 'trimSnaps',
+        loop: true
+    });
 
-        const value = (scrollContainer.current?.clientWidth) as number * amount || 1000
+    useEffect(() => {
+        if (!emblaApi) return;
 
-        if (scrollContainer && scrollContainer.current) {
-            scrollContainer.current.scrollLeft += value;
-        }
-    }
+        const updateButtons = () => {
+            setCanScrollPrev(emblaApi.canScrollPrev());
+            setCanScrollNext(emblaApi.canScrollNext());
+        };
 
-    const childWithRef = Children.map(children, (child) =>
-        isValidElement(child) ? cloneElement(child, { ref: scrollContainer } as any) : child
-    );
-    
+        updateButtons();
+
+        emblaApi.on('select', updateButtons);
+        emblaApi.on('reInit', updateButtons);
+
+        return () => {
+            emblaApi.off('select', updateButtons);
+            emblaApi.off('reInit', updateButtons);
+        };
+    }, [emblaApi]);
 
     return (
-        <div className={styles.carousel} ref={wrapper}>
-            {childWithRef}
+        <>
+            <div ref={emblaRef} className={styles.viewport}>
+                {children}
 
-            <div className={`${styles.navigation} ${styles.left}`} onClick={() => scrollX(-1)}>
-                <p>◀</p>
-            </div>
-            <div className={`${styles.navigation} ${styles.right}`} onClick={() => scrollX(1)}>
+                {canScrollPrev && (
+                    <div className={`${styles.navigation} ${styles.left}`} onClick={() => emblaApi?.scrollPrev()}>
+                        <p>◀</p>
+                    </div>
+                )}
 
-                <p>▶</p>
+                {canScrollNext && (
+                    <div className={`${styles.navigation} ${styles.right}`} onClick={() => emblaApi?.scrollNext()}>
+                        <p>▶</p>
+                    </div>
+                )}
             </div>
-        </div>
+
+
+        </>
     )
 
 }

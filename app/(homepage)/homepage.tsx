@@ -1,7 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import Categories from "../components/categories/categories";
-import Carousel from "../components/carousel/carousel";
 
 export default function HomePage({ games }: { games: Game[] }) {
 
