@@ -67,6 +67,10 @@ app.get('/api/games', async (req, res) => {
 
     try {
 
+        // popular, new releases, action, fantasy, adventure
+        // fighting games, racing, shooting
+        // 
+
         const query = `
             SELECT g.*, c.url AS image, c.width, c.height FROM games g
             LEFT JOIN covers c ON g.id = c.game

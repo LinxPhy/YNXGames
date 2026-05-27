@@ -46,7 +46,7 @@ body {
     font-family: var(--font-quicksand);
     font-style: normal;
     background-color: var(--background);
-    overflow: hidden;
+    /* overflow: hidden; */
     overflow-y: scroll;
 }
 
@@ -132,3 +132,9 @@ ul {
 main {
     display: flex;
 }
+
+/* .container{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+} */

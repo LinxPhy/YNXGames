@@ -1,5 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import Categories from "../components/categories/categories";
+import Carousel from "../components/carousel/carousel";
 
 export default function HomePage({ games }: { games: Game[] }) {
 
@@ -18,21 +20,23 @@ export default function HomePage({ games }: { games: Game[] }) {
                 </div>
             </div>
 
-            <div className={styles.games}>
+            <Categories />
+
+            {/* <div className={styles.games}>
 
                 <div>
                     <h2>Popular Games</h2>
                 </div>
 
                 <div className={styles.gamesContainer}>
-                    {games.slice(0, 12).map((game) => (
+                    {games.slice(0, 10).map((game) => (
                         <div key={game.id} className={styles.gameCard}>
-                            <Image src={game.image} className={styles.gameImage} alt={game.image} width={game.width} height={game.height} className={styles.gameImage} />
+                            <Image src={game.image} className={styles.gameImage} alt={game.image} width={game.width} height={game.height} />
 
                             <div className={styles.gameInfo}>
                                 <h3 className={styles.gameTitle}>{game.name}</h3>
                                 <div className={styles.gameRating}>
-                                    <Image src ="/icons/star.png" alt="Star" width={16} height={16} />
+                                    <Image src="/icons/star.png" alt="Star" width={16} height={16} />
                                     <p>{game?.total_rating?.toFixed(1)}</p>
                                 </div>
                             </div>
@@ -40,7 +44,33 @@ export default function HomePage({ games }: { games: Game[] }) {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> */}
+
+            {/* <div className={styles.games}>
+
+                <div>
+                    <h2>New Games</h2>
+                </div>
+
+                <Carousel >
+                    <div className={styles.gamesContainer}>
+                        {games.map((game) => (
+                            <div key={game.id} className={styles.gameCard}>
+                                <Image src={game.image} className={styles.gameImage} alt={game.image} width={game.width} height={game.height} />
+
+                                <div className={styles.gameInfo}>
+                                    <h3 className={styles.gameTitle}>{game.name}</h3>
+                                    <div className={styles.gameRating}>
+                                        <Image src="/icons/star.png" alt="Star" width={16} height={16} />
+                                        <p>{game?.total_rating?.toFixed(1)}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        ))}
+                    </div>
+                </Carousel>
+            </div> */}
 
         </div>
     );
