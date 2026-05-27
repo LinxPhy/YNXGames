@@ -24,17 +24,11 @@ export default function Categories() {
             </div>
 
             <Carousel>
-                <div className={styles.categories}>
+                <div className={styles.categories} >
                     {images.map((image) => (
                         <Link href={`/games/${image.slug}`}
                             className={styles.category}
                             key={image.id}
-                            style={{
-                                flexGrow: 0,
-                                flexShrink: 0,
-                                flexBasis: 'clamp(180px, 25vw, 240px)',
-                                aspectRatio: '3/4',
-                            }}
                         >
                             <Image src={image.url} width={784} height={1168} alt={image.name} />
                             <div className={styles.info}>
