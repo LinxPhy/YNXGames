@@ -38,7 +38,7 @@ async function setThemes() {
             const [result] = await pool.promise().query(query, [theme, LIMIT])
             if (!result) return
 
-            cache.set(theme, result)
+            cache.set(theme.replace(' ', '_'), result)
             console.log("Finished setting theme", theme)
             
         }

@@ -8,7 +8,7 @@
     padding: 0.5rem 2rem;
     display: flex;
     flex-direction: column;
-    gap: 5rem;
+    gap: 2rem;
 }
 
 .searchContainer{
@@ -53,9 +53,13 @@
     color: var(--primary);
 }
 
-
-
 .gamesContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.game{
     display: flex;
     gap: 1.5rem;
 }
@@ -64,7 +68,7 @@
     margin-bottom: 1rem;
 }
 
-.gamesContainer .gameImage{
+.game .gameImage{
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -107,6 +111,10 @@
     font-size: 0.8rem;
     color: var(--white);
     font-weight: 800;
+    /* all in one line */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .gameInfo {

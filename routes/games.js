@@ -114,19 +114,101 @@ app.get('/api/games', async (req, res) => {
 });
 
 
-// app.get('/api/test_games', async (req, res) => {
+app.get('/api/game/:id', async (req, res) => {
 
-//     try {
+    try {
 
-//         const data = cache.get('action')
+        const { id } = req.params
+        console.log(id)
 
-//         res.send({ data });
 
-//     } catch (error) {
-//         console.error('Error fetching games:', error);
-//         res.status(500).send({ error: 'Failed to fetch games' });
-//     }
+        const queries = {
 
-// })
+            themes: `
+                    SELECT t.id, t.name, t.slug FROM themes t 
+                    LEFT JOIN game_themes gt ON t.id = gt.theme 
+                    WHERE gt.id = ?;
+                    `,
+
+            covers: `SELECT id, width, height, url FROM covers c WHERE c.game = ?;`,
+
+            genres: `SELECT ge.id, ge.name, ge.slug
+                    FROM game_genres gg
+                    JOIN genres ge ON ge.id = gg.genre
+                    WHERE gg.id = ?;`,
+
+            platforms: `SELECT p.id, p.name
+                    FROM game_platforms gp
+                    JOIN platforms p ON p.id = gp.platform
+                    WHERE gp.id = ?;`,
+
+            screenshots: `SELECT s.width, s.height, s.url FROM screenshots s WHERE s.game = ? ;`,
+
+            videos: `SELECT v.video_id FROM videos v WHERE v.game = ? ;`,
+
+            modes: `SELECT m.id, m.name, m.slug FROM modes m
+                    JOIN game_modes gm ON m.id = gm.mode 
+                    WHERE gm.id = ?;`,
+
+            similar_games: `SELECT g.*
+                    FROM similar_games sg
+                    JOIN games g ON sg.similar_game = g.id
+                    LEFT JOIN covers c ON g.id = c.game
+                    WHERE sg.id = ?;`,
+
+            collections: `SELECT * FROM collections c
+                    LEFT JOIN game_collections gc ON c.id = gc.collection
+                    WHERE gc.id = ?;`,
+
+            franchises: `SELECT * FROM franchises f
+                    LEFT JOIN game_franchises gf ON f.id = gf.franchise
+                    WHERE gf.id = ?;`
+
+        }
+
+        const formatItems = (game) => ({
+            ...game,
+
+            url: game.url
+                ? `https:${game.url.replace('t_thumb', 't_1080p')}`
+                : game.url,
+
+            screenshot: game.screenshot
+                ? `https:${game.screenshot.replace('t_thumb', 't_1080p')}`
+                : game.screenshot,
+
+            total_rating: game.total_rating
+                ? (game.total_rating / 20).toFixed(1)
+                : game.total_rating
+        });
+
+        const loadGameRelations = async (gameId) => {
+            const entries = Object.entries(queries);
+
+            const results = await Promise.all(
+                entries.map(([key, sql]) =>
+                    pool.promise().query(sql, [gameId]).then(([rows]) => [key, rows])
+                )
+            );
+
+            return Object.fromEntries(results);
+        };
+
+        // const relations = await loadGameRelations(id);
+        const relations = await loadGameRelations(112875);
+
+        // loop through the relations object and format each game
+        for (const [key, games] of Object.entries(relations)) {
+            relations[key] = games.map(formatItems);
+        }
+
+        res.send(relations);
+
+    } catch (error) {
+        console.error('Error fetching games:', error);
+        res.status(500).send({ error: 'Failed to fetch games' });
+    }
+
+})
 
 module.exports = app;

@@ -355,10 +355,10 @@ app.get('/create_videos', async (req, res) => {
             const companies = response.data
 
             for (const company of companies) {
-                const { id, game, animated, width, height, url } = company
+                const { id, game, name, video_id } = company
                 await pool.promise().query(
-                    'INSERT INTO videos (id, game, name, url) VALUES (?, ?, ?, ?)',
-                    [id, game, animated, url]
+                    'INSERT INTO videos (id, game, name, video_id) VALUES (?, ?, ?, ?)',
+                    [id, game, name, video_id]
                 )
             }
 
@@ -498,7 +498,8 @@ app.get('/create_games', async (req, res) => {
                     involved_companies, similar_games, platforms, genres, game_modes, themes, screenshots, videos, franchises, collections
                 } = game
 
-
+                
+                // Needs to get the company id not the id of the object
                 if (involved_companies) {
                     for (const company of involved_companies) {
                         await pool.promise().query(

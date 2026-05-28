@@ -69,7 +69,7 @@
 --     id INT PRIMARY KEY,
 --     game INT,
 --     name varchar(255),
---     url varchar(255),
+--     video_id varchar(255),
 -- )
 
 -- CREATE TABLE themes (

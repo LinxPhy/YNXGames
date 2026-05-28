@@ -38,25 +38,21 @@ export default function Carousel(
     }, [emblaApi]);
 
     return (
-        <>
-            <div ref={emblaRef} className={styles.viewport}>
-                {children}
+        <div ref={emblaRef} className={styles.viewport}>
+            {children}
 
-                {canScrollPrev && (
-                    <div className={`${styles.navigation} ${styles.left}`} onClick={() => emblaApi?.scrollPrev()}>
-                        <p>◀</p>
-                    </div>
-                )}
+            {canScrollPrev && (
+                <div className={`${styles.navigation} ${styles.left}`} onClick={() => emblaApi?.scrollPrev()}>
+                    <p>◀</p>
+                </div>
+            )}
 
-                {canScrollNext && (
-                    <div className={`${styles.navigation} ${styles.right}`} onClick={() => emblaApi?.scrollNext()}>
-                        <p>▶</p>
-                    </div>
-                )}
-            </div>
-
-
-        </>
+            {canScrollNext && (
+                <div className={`${styles.navigation} ${styles.right}`} onClick={() => emblaApi?.scrollNext()}>
+                    <p>▶</p>
+                </div>
+            )}
+        </div>
     )
 
 }

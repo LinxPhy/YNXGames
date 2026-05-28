@@ -122,3 +122,16 @@ interface Game {
     height: number;
     genre: string;
 }
+
+interface GameProps {
+    themes: Theme[],
+    covers: Cover[],
+    genres: Genre[],
+    platforms: Platform[],
+    companies: Company[],
+    modes: Mode[],
+    videos: Video[],
+    screenshots: Screenshot[],
+    franchises: Franchise[],
+    collections: Collection[],
+}
