@@ -1,4 +1,4 @@
-const { cache } = require('../utils/cache');
+const cache = require('../utils/cache');
 const { pool } = require('../scripts/db');
 
 const LIMIT = 20
@@ -14,10 +14,9 @@ async function setThemes() {
 
         for (const theme of themes) {
 
-            console.log("Setting theme", theme)
             const query =
                 `
-                    SELECT DISTINCT g.*, c.url AS 'image', ge.name
+                    SELECT DISTINCT g.*, ANY_VALUE(c.url) AS 'image', ANY_VALUE(ge.name) AS 'genre'
                     FROM games g
                     LEFT JOIN game_themes gt ON g.id = gt.id
                     LEFT JOIN themes t ON gt.theme = t.id
@@ -31,16 +30,17 @@ async function setThemes() {
                         AND g.first_release_date >= DATE_SUB(CURDATE(), INTERVAL 15 YEAR) 
                         AND g.first_release_date < CURRENT_DATE() 
                         AND t.name = ?
+                    GROUP BY g.id
                     ORDER BY RAND()
                     LIMIT ?;
                 `
 
             const [result] = await pool.promise().query(query, [theme, LIMIT])
-            console.log(result)
-            if (!result) continue
-            cache.set(theme, result)
+            if (!result) return
 
+            cache.set(theme, result)
             console.log("Finished setting theme", theme)
+            
         }
 
     } catch (error) {
@@ -57,7 +57,7 @@ async function setNewReleases() {
 
         const query =
             `
-                SELECT DISTINCT g.*, c.url AS 'image', ge.name
+                SELECT DISTINCT g.*, ANY_VALUE(c.url) AS 'image', ANY_VALUE(ge.name) AS 'genre'
                 FROM games g
                 LEFT JOIN game_themes gt ON g.id = gt.id
                 LEFT JOIN themes t ON gt.theme = t.id
@@ -70,17 +70,20 @@ async function setNewReleases() {
                     p.id IN (48, 167, 169, 6, 130, 508)
                     AND g.first_release_date >= DATE_SUB(CURDATE(), INTERVAL 15 YEAR) 
                     AND g.first_release_date < CURRENT_DATE() 
+                GROUP BY g.id
                 ORDER BY RAND()
                 LIMIT ?;
             `
 
         const [result] = await pool.promise().query(query, [LIMIT])
-        // if (!result) continue
+        if (!result) return
+
         cache.set(cacheKey, result)
+        console.log("Finished setting new releases")
 
 
     } catch (error) {
-        console.log("Failed to set new games", error)
+        console.log("Failed to set new releases", error)
     }
 
 }
@@ -93,7 +96,7 @@ async function setRandomGames() {
 
         const query =
             `
-                SELECT DISTINCT g.*, c.url AS 'image', ge.name
+                SELECT DISTINCT g.*, ANY_VALUE(c.url) AS 'image', ANY_VALUE(ge.name) AS 'genre'
                 FROM games g
                 LEFT JOIN game_themes gt ON g.id = gt.id
                 LEFT JOIN themes t ON gt.theme = t.id
@@ -103,13 +106,15 @@ async function setRandomGames() {
                 LEFT JOIN game_genres gg ON g.id = gg.id
                 LEFT JOIN genres ge ON gg.genre = ge.id
                 WHERE p.id IN (48, 167, 169, 6, 130, 508)
+                GROUP BY g.id
                 ORDER BY first_release_date DESC
                 LIMIT ?;
             `
 
         const [result] = await pool.promise().query(query, [LIMIT])
-        // if (!result) continue
+        if (!result) return
         cache.set(cacheKey, result)
+        console.log("Finished setting random games")
 
 
     } catch (error) {
@@ -123,10 +128,10 @@ async function setPopularGames() {
     try {
 
         const cacheKey = 'popular'
-
+        
         const query =
             `
-                SELECT DISTINCT g.*, c.url AS 'image', ge.name
+                SELECT DISTINCT g.*, ANY_VALUE(c.url) AS 'image', ANY_VALUE(ge.name) AS 'genre'
                 FROM games g
                 LEFT JOIN game_themes gt ON g.id = gt.id
                 LEFT JOIN themes t ON gt.theme = t.id
@@ -142,12 +147,13 @@ async function setPopularGames() {
                         180259, 1905, 115, 372158, 387369,
                         324852, 121, 17269, 294041, 228530
                     )
-
+                GROUP BY g.id
             `
 
         const [result] = await pool.promise().query(query, [LIMIT])
-        // if (!result) continue
+        if (!result) return
         cache.set(cacheKey, result)
+        console.log("Finished setting popular games")
 
 
     } catch (error) {
@@ -155,8 +161,6 @@ async function setPopularGames() {
     }
 
 }
-
-// old but gold
 
 async function setOldGames() {
 
@@ -166,7 +170,7 @@ async function setOldGames() {
 
         const query =
             `
-                SELECT DISTINCT g.*, c.url AS 'image', ge.name
+                SELECT DISTINCT g.*, ANY_VALUE(c.url) AS 'image', ANY_VALUE(ge.name) AS 'genre'
                 FROM games g
                 LEFT JOIN game_themes gt ON g.id = gt.id
                 LEFT JOIN themes t ON gt.theme = t.id
@@ -178,13 +182,16 @@ async function setOldGames() {
                 WHERE 
                     p.id IN (48, 167, 169, 6, 130, 508)
                     AND g.first_release_date <= DATE_SUB(CURDATE(), INTERVAL 15 YEAR) 
+                GROUP BY g.id
                 ORDER BY RAND()
                 LIMIT ?;
             `
 
         const [result] = await pool.promise().query(query, [LIMIT])
-        // if (!result) continue
+        if (!result) return
+
         cache.set(cacheKey, result)
+        console.log("Finished setting old games")
 
 
     } catch (error) {

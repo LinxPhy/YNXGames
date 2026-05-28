@@ -16,8 +16,8 @@ setPopularGames()
 setOldGames()
 
 // run every 24 hours
-cron.schedule('0 0 * * *', setThemes)
-cron.schedule('0 0 * * *', setNewReleases)
-cron.schedule('0 0 * * *', setRandomGames)
-cron.schedule('0 0 * * *', setPopularGames)
-cron.schedule('0 0 * * *', setOldGames)
+// cron.schedule('0 0 * * *', setThemes)
+// cron.schedule('0 0 * * *', setNewReleases)
+// cron.schedule('0 0 * * *', setRandomGames)
+// cron.schedule('0 0 * * *', setPopularGames)
+// cron.schedule('0 0 * * *', setOldGames)

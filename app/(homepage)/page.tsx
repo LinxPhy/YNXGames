@@ -4,9 +4,9 @@ import HomePage from './homepage';
 export default async function Home() {
 
   const request = await axios.get(`${process.env.SERVER_URL}/games`);
-  const data = request.data;
+  const games = request.data;
 
   return (
-    <HomePage games={data.games} /> 
+    <HomePage games={games}/> 
   );
 }

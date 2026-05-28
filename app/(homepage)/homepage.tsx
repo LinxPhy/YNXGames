@@ -3,12 +3,9 @@ import styles from "./page.module.css";
 import Categories from "../components/categories/categories";
 import Carousel from "../components/carousel/carousel";
 
-export default function HomePage({ games }: { games: Game[] }) {
+export default function HomePage({ games }: { games: any }) {
 
-    // popular games, 
-    // by genre
-    // new releases
-    // 
+    const { action, fantasy, mystery, open_world, new_releases, random, popular, old_games } = games
 
     return (
         <div className={styles.content}>
@@ -31,15 +28,20 @@ export default function HomePage({ games }: { games: Game[] }) {
 
                 <Carousel>
                     <div className={styles.gamesContainer}>
-                        {games.slice(0, 10).map((game) => (
+                        {popular.map((game : Game) => (
                             <div key={game.id} className={styles.gameCard}>
-                                <Image src={game.image} className={styles.gameImage} alt={game.image} width={game.width} height={game.height} />
+                                <Image
+                                    src={game?.image || "/images/placeholder.png"}
+                                    className={styles.gameImage}
+                                    alt={game.name || "Game Image"}
+                                    width={game.width || 600}
+                                    height={game.height || 900} />
 
                                 <div className={styles.gameInfo}>
                                     <h3 className={styles.gameTitle}>{game.name}</h3>
                                     <div className={styles.gameRating}>
                                         <div className={styles.gameGenre}>
-                                            <p>Action</p>
+                                            <p>{game.genre}</p>
                                         </div>
                                         <div className={styles.rating}>
                                             <Image src="/icons/star.png" alt="Star" width={16} height={16} />
@@ -63,7 +65,7 @@ export default function HomePage({ games }: { games: Game[] }) {
 
                 <Carousel >
                     <div className={styles.gamesContainer}>
-                        {games.slice(10, 20).map((game) => (
+                        {new_releases.slice(10, 20).map((game : Game) => (
                             <div key={game.id} className={styles.gameCard}>
                                 <Image
                                     src={game?.image || "/images/placeholder.png"}

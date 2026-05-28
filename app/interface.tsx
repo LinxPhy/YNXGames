@@ -120,4 +120,5 @@ interface Game {
     image: string;
     width: number;
     height: number;
+    genre: string;
 }
