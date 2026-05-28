@@ -122,14 +122,33 @@
     z-index: 2;
 }
 
-.gameRating{
+/* .gameRating{
     display: flex;
     align-items: center;
     gap: 0.2rem;
     justify-content: flex-end;
 }
 
+ */
+
+.gameRating{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .gameRating p{
     font-size: 0.8rem;
-    
+}
+
+.gameGenre{
+    background-color: var(--primary);
+    padding: 0.1rem 0.5rem;
+    border-radius: 0.5rem;
+    color: var(--white);
+    margin-top: 0.2rem;
+}
+
+.rating{
+    display: flex;
 }

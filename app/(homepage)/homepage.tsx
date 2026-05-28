@@ -38,8 +38,13 @@ export default function HomePage({ games }: { games: Game[] }) {
                                 <div className={styles.gameInfo}>
                                     <h3 className={styles.gameTitle}>{game.name}</h3>
                                     <div className={styles.gameRating}>
-                                        <Image src="/icons/star.png" alt="Star" width={16} height={16} />
-                                        <p>{game?.total_rating || "N/A"}</p>
+                                        <div className={styles.gameGenre}>
+                                            <p>Action</p>
+                                        </div>
+                                        <div className={styles.rating}>
+                                            <Image src="/icons/star.png" alt="Star" width={16} height={16} />
+                                            <p>{game?.total_rating || "N/A"}</p>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -60,12 +65,12 @@ export default function HomePage({ games }: { games: Game[] }) {
                     <div className={styles.gamesContainer}>
                         {games.slice(10, 20).map((game) => (
                             <div key={game.id} className={styles.gameCard}>
-                                <Image 
-                                    src={game?.image || "/images/placeholder.png"} 
-                                    className={styles.gameImage} 
-                                    alt={game.name || "Game Image"} 
-                                    width={game.width || 600} 
-                                    height={game.height || 900} 
+                                <Image
+                                    src={game?.image || "/images/placeholder.png"}
+                                    className={styles.gameImage}
+                                    alt={game.name || "Game Image"}
+                                    width={game.width || 600}
+                                    height={game.height || 900}
                                 />
 
                                 <div className={styles.gameInfo}>

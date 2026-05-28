@@ -1,7 +1,14 @@
 const express = require('express');
 const axios = require('axios');
+const NodeCache = require('node-cache')
+const cache = require('../utils/cache')
 const { pool } = require('../scripts/db');
 const app = express();
+
+// const cache = new NodeCache({
+//     stdTTL: 0,
+//     checkperiod: 0,
+// });
 
 
 app.get('/api/filters', async (req, res) => {
@@ -89,6 +96,11 @@ app.get('/api/games', async (req, res) => {
             LIMIT 20;
         `
 
+        // if (cache.get('new_games_query')) {
+        //     res.send({ games: cache.get('new_games_query') });
+        //     return
+        // }
+
         const random_query = `
             SELECT DISTINCT g.*, c.url AS 'image', c.width, c.height
             FROM games g
@@ -110,7 +122,24 @@ app.get('/api/games', async (req, res) => {
 
         })
 
+        // cache.set('new_games_query', games)
+
         res.send({ games });
+
+    } catch (error) {
+        console.error('Error fetching games:', error);
+        res.status(500).send({ error: 'Failed to fetch games' });
+    }
+
+})
+
+app.get('/api/test_games', async (req, res) => {
+
+    try {
+
+        const data = cache.get('action')
+
+        res.send({ data });
 
     } catch (error) {
         console.error('Error fetching games:', error);
