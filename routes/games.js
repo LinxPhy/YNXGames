@@ -114,13 +114,11 @@ app.get('/api/games', async (req, res) => {
 });
 
 
-app.get('/api/game/:id', async (req, res) => {
+app.get('/api/game/:slug', async (req, res) => {
 
     try {
 
-        const { id } = req.params
-        console.log(id)
-
+        const { slug } = req.params
 
         const queries = {
 
@@ -194,15 +192,28 @@ app.get('/api/game/:id', async (req, res) => {
             return Object.fromEntries(results);
         };
 
-        // const relations = await loadGameRelations(id);
-        const relations = await loadGameRelations(112875);
+        const [game] = await pool.promise().query(`SELECT * FROM games WHERE slug = ? LIMIT 1`, [slug])
 
-        // loop through the relations object and format each game
+        if (!game) {
+            return res.status(404).send({ error: 'Game not found' });
+        }
+
+        const relations = await loadGameRelations(game[0].id);
+
         for (const [key, games] of Object.entries(relations)) {
             relations[key] = games.map(formatItems);
         }
 
-        res.send(relations);
+        const gameData = {
+            game: game
+        }
+
+        const gameWithRelations = {
+            ...formatItems(gameData),
+            ...relations
+        };
+
+        res.send(gameWithRelations);
 
     } catch (error) {
         console.error('Error fetching games:', error);

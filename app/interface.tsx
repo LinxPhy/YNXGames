@@ -124,6 +124,7 @@ interface Game {
 }
 
 interface GameProps {
+    game: Game[],
     themes: Theme[],
     covers: Cover[],
     genres: Genre[],

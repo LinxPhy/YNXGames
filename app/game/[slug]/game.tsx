@@ -3,8 +3,8 @@ import styles from './page.module.css'
 
 export default function Game({ game }: { game: GameProps }) {
 
-    const { themes, covers, genres, platforms, companies, modes, videos, screenshots, franchises, collections } = game
-    const hero = { themes, covers, genres, videos, screenshots }
+    const { themes, covers, genres, platforms, companies, modes, videos, screenshots, franchises, collections, game: play } = game
+    const hero = { themes, covers, genres, videos, screenshots, play }
 
     return (
         <div className={styles.content}>
