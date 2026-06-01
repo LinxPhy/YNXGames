@@ -1,0 +1,15 @@
+
+.media {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.screenshot {
+    width: 300px;
+    display: flex;
+}
+
+.screenshot img {
+    width: 100%;
+    height: auto;
+}

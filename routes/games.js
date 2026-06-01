@@ -140,7 +140,7 @@ app.get('/api/game/:slug', async (req, res) => {
                     JOIN platforms p ON p.id = gp.platform
                     WHERE gp.id = ?;`,
 
-            screenshots: `SELECT s.width, s.height, s.url FROM screenshots s WHERE s.game = ? ;`,
+            screenshots: `SELECT s.id, s.width, s.height, s.url FROM screenshots s WHERE s.game = ? ;`,
 
             videos: `SELECT v.video_id FROM videos v WHERE v.game = ? ;`,
 
@@ -175,6 +175,12 @@ app.get('/api/game/:slug', async (req, res) => {
                 ? `https:${game.screenshot.replace('t_thumb', 't_1080p')}`
                 : game.screenshot,
 
+            video_id: game.video_id? `https://www.youtube.com/watch?v=${game.video_id}` : game.video_id,
+
+            rating: game.rating
+                ? (game.rating / 20).toFixed(1)
+                : game.rating,
+
             total_rating: game.total_rating
                 ? (game.total_rating / 20).toFixed(1)
                 : game.total_rating
@@ -205,11 +211,11 @@ app.get('/api/game/:slug', async (req, res) => {
         }
 
         const gameData = {
-            game: game
+            game: formatItems(game[0])
         }
 
         const gameWithRelations = {
-            ...formatItems(gameData),
+            ...gameData,
             ...relations
         };
 

@@ -1,17 +1,12 @@
 import styles from './hero.module.css'
+import formatDateTime from '@/app/components/formatDateTime'
 import Image from 'next/image'
 
 export default function Hero({ data }: { data: any }) {
 
     const { themes, covers, genres, videos, screenshots, play } = data
     const cover = covers[0]
-    const game = play[0]
-//     total_rating
-// : 
-// 79.7593
-// total_rating_count
-// : 
-// 993
+    const game = play
 
     return (
         <div className={styles.hero}>
@@ -41,13 +36,13 @@ export default function Hero({ data }: { data: any }) {
 
                     <div>
                         <p>External Ratings</p>
-                        <span>{game.total_rating_count}</span>
+                        <span>{game.total_rating_count} ratings</span>
                     </div>
                 </div>
 
                 {/* release date */}
                 <div>
-                    <span>Release Date: {game?.first_release_date || "Unknown"}</span>
+                    <span>Release Date: {formatDateTime(game?.first_release_date) || "Unknown"}</span>
                 </div>
 
             </div>

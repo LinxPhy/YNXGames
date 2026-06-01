@@ -1,0 +1,27 @@
+
+.navigation{
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.navigation ul{
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    border-top: 1px solid var(--dark);
+    border-bottom: 1px solid var(--dark);
+}
+
+.navigation li{
+    padding: 1rem 1rem;
+    color: var(--white);
+    cursor: pointer;
+}
+
+.navigation li:hover{
+    /* background-color: var(--primary); */
+    color: var(--primary);
+    text-decoration: underline;
+    border-radius: .2rem;
+}
