@@ -135,4 +135,5 @@ interface GameProps {
     screenshots: Screenshot[],
     franchises: Franchise[],
     collections: Collection[],
+    similar_games: Game[],
 }

@@ -1,0 +1,36 @@
+.details {
+    margin-top: 2rem;
+    padding: 2rem;
+    background-color: var(--dark);
+    border-radius: 0.5rem;
+}
+
+.details h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.details h4{
+    color: var(--light);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.detailSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    align-items: start;
+    gap: 1rem;
+}
+
+.item p{
+    font-size: 1rem;
+    color: var(--light);
+}
+

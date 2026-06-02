@@ -167,7 +167,7 @@ app.get('/api/game/:slug', async (req, res) => {
         const formatItems = (game) => ({
             ...game,
 
-            url: game.url
+            url: game.url && (!game.url.includes("https:"))
                 ? `https:${game.url.replace('t_thumb', 't_1080p')}`
                 : game.url,
 
