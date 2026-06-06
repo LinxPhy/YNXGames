@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styles from './header.module.css';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import Search from '../search/search';
 
 export default function Header() {
 
@@ -18,12 +19,7 @@ export default function Header() {
                 </h1>
             </div>
 
-            <div className={styles.searchContainer}>
-                <div className={styles.searchWrapper}>
-                    <input type="search" placeholder="Search for games in our database" className={styles.search} />
-                    <button className={styles.searchButton}>Search</button>
-                </div>
-            </div>
+            <Search />
 
             <nav>
                 <Link href="/" className={pathname === '/' ? styles.active : ''}>Home</Link>

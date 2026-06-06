@@ -229,4 +229,46 @@ app.get('/api/game/:slug', async (req, res) => {
 
 })
 
+app.get('/api/search/:search_query', async (req, res) => {
+
+    try {
+
+        const { search_query } = req.params
+        const page = parseInt(req.query.page)
+        const limit = parseInt(req.query.limit)
+        const offset = (page - 1) * limit
+
+        const query = `
+            SELECT g.id, g.name, g.slug, c.url, GROUP_CONCAT(DISTINCT p.name ORDER BY p.name SEPARATOR ', ') AS platforms FROM games g 
+            LEFT JOIN covers c ON g.id = c.game 
+            LEFT JOIN game_platforms gp ON g.id = gp.id
+            LEFT JOIN platforms p ON gp.platform = p.id
+            WHERE g.name LIKE ? 
+            GROUP BY g.id, g.name, g.slug, c.url
+            LIMIT ? OFFSET ?;
+        `
+        const [response] = await pool.promise().query(query, [`%${search_query}%`, limit + 1, offset])
+
+        const data = response.map((game) => ({
+            ...game,
+
+            url: game.url
+                ? `https:${game.url}`
+                : game.url
+        }))
+
+        let hasMore = false;
+
+        if (data.length > limit) hasMore = true
+        const gamesData = data.slice(0, limit)
+
+        res.send({ data: gamesData, hasMore, nextPage: parseInt(page) + 1 });
+
+    } catch (error) {
+        console.error('Error fetching games:', error);
+        res.status(500).send({ error: 'Failed to fetch games' });
+    }
+
+})
+
 module.exports = app;
