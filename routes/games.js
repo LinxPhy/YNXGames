@@ -148,11 +148,12 @@ app.get('/api/game/:slug', async (req, res) => {
                     JOIN game_modes gm ON m.id = gm.mode 
                     WHERE gm.id = ?;`,
 
-            similar_games: `SELECT g.*
-                    FROM similar_games sg
-                    JOIN games g ON sg.similar_game = g.id
-                    LEFT JOIN covers c ON g.id = c.game
-                    WHERE sg.id = ?;`,
+            similar_games: `SELECT g.id, g.name, g.slug, g.storyline, g.summary, c.url
+                        FROM similar_games sg
+                        JOIN games g ON sg.similar_game = g.id
+                        LEFT JOIN covers c ON g.id = c.game
+                        WHERE sg.id = ?;
+                    `,
 
             collections: `SELECT * FROM collections c
                     LEFT JOIN game_collections gc ON c.id = gc.collection
@@ -175,7 +176,7 @@ app.get('/api/game/:slug', async (req, res) => {
                 ? `https:${game.screenshot.replace('t_thumb', 't_1080p')}`
                 : game.screenshot,
 
-            video_id: game.video_id? `https://www.youtube.com/watch?v=${game.video_id}` : game.video_id,
+            video_id: game.video_id ? `https://www.youtube.com/watch?v=${game.video_id}` : game.video_id,
 
             rating: game.rating
                 ? (game.rating / 20).toFixed(1)

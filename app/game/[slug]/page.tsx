@@ -9,7 +9,7 @@ export default async function GamePage({ params }: { params: { slug: string } })
         `${process.env.SERVER_URL}/game/${slug}`,
         {
             next: {
-                revalidate: 3600 // cache for 1 hour
+                revalidate: 0 // cache for 1 hour
             }
         }
     );

@@ -3,6 +3,7 @@ import { Quicksand } from "next/font/google";
 import "./globals.css";
 import Header from "./components/header/header";
 import ReactQueryProvider from "./components/reactQueryProvider";
+import Footer from "./components/footer/footer";
 
 export const metadata: Metadata = {
   title: "YNXGames",
@@ -25,6 +26,7 @@ export default function RootLayout({
             <main>
               {children}
             </main>
+            <Footer />
           </div>
         </ReactQueryProvider>
       </body>
