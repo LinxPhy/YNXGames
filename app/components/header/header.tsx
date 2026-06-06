@@ -24,7 +24,7 @@ export default function Header() {
             <nav>
                 <Link href="/" className={pathname === '/' ? styles.active : ''}>Home</Link>
                 <Link href="/games" className={pathname === '/games' ? styles.active : ''}>Games</Link>
-                <Link href="/discover" className={pathname === '/discover' ? styles.active : ''}>Discover</Link>
+                <Link href="/explore" className={pathname === '/explore' ? styles.active : ''}>Explore</Link>
                 <Link href="/faq" className={pathname === '/faq' ? styles.active : ''}>FAQ</Link>
             </nav>
 

@@ -12,7 +12,7 @@ export default function Footer() {
                     <ul>
                         <li><Link href="/">HomePage</Link></li>
                         <li><Link href="/games">Games</Link></li>
-                        <li><Link href="/discover">Discover</Link></li>
+                        <li><Link href="/explore">Explore</Link></li>
                         <li><Link href="/search">Search</Link></li>
                     </ul>
                 </div>

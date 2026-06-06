@@ -271,4 +271,37 @@ app.get('/api/search/:search_query', async (req, res) => {
 
 })
 
+app.get('/api/popular', async (req, res) => {
+
+    try {
+
+        const query = `
+            SELECT DISTINCT g.*, ANY_VALUE(c.url) AS 'image', ANY_VALUE(ge.name) AS 'genre'
+            FROM games g
+            LEFT JOIN game_themes gt ON g.id = gt.id
+            LEFT JOIN themes t ON gt.theme = t.id
+            LEFT JOIN covers c ON g.id = c.game
+            LEFT JOIN game_platforms gp ON g.id = gp.id
+            LEFT JOIN platforms p ON gp.platform = p.id
+            LEFT JOIN game_genres gg ON g.id = gg.id
+            LEFT JOIN genres ge ON gg.genre = ge.id
+            WHERE g.id IN 
+                (
+                    134709, 27912, 112875, 11156, 219027,
+                    1942, 103205, 136178, 252729, 149275,
+                    180259, 1905, 115, 372158, 387369,
+                    324852, 121, 17269, 294041, 228530
+                )
+            GROUP BY g.id
+        `
+
+        
+
+    } catch (error) {
+        console.error('Error fetching games:', error);
+        res.status(500).send({ error: 'Failed to fetch games' });
+    }
+
+})
+
 module.exports = app;
