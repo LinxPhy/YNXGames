@@ -6,14 +6,17 @@ import Explore from './explore';
 export default async function ExplorePage() {
 
     const request = await axios.get(`${process.env.SERVER_URL}/filters`);
+    const request2 = await axios.get(`${process.env.SERVER_URL}/popular`);
+    
     const data = request.data;
+    const popular = request2.data;
 
     const { genres, platforms, companies, themes, modes } = data.filters;
 
     return (
         <div className={styles.content}>
             <Sidebar genres={genres} platforms={platforms} companies={companies} themes={themes} modes={modes} />
-            <Explore />
+            <Explore popular={popular} />
         </div>
     )
 

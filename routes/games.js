@@ -281,8 +281,6 @@ app.get('/api/popular', async (req, res) => {
             LEFT JOIN game_themes gt ON g.id = gt.id
             LEFT JOIN themes t ON gt.theme = t.id
             LEFT JOIN covers c ON g.id = c.game
-            LEFT JOIN game_platforms gp ON g.id = gp.id
-            LEFT JOIN platforms p ON gp.platform = p.id
             LEFT JOIN game_genres gg ON g.id = gg.id
             LEFT JOIN genres ge ON gg.genre = ge.id
             WHERE g.id IN 
@@ -295,7 +293,120 @@ app.get('/api/popular', async (req, res) => {
             GROUP BY g.id
         `
 
+        const [response] = await pool.promise().query(query)
+
+
+        const data = response.map((game) => ({
+            ...game,
+
+            image: game.image
+                ? `https:${game.image}`
+                : game.image,
+
+            rating: game.rating
+                ? (game.rating / 20).toFixed(1)
+                : game.rating,
+
+            total_rating: game.total_rating
+                ? (game.total_rating / 20).toFixed(1)
+                : game.total_rating
+        }))
+
+        res.send(data);
+
+    } catch (error) {
+        console.error('Error fetching games:', error);
+        res.status(500).send({ error: 'Failed to fetch games' });
+    }
+
+})
+
+
+app.get('/api/explore', async (req, res) => {
+
+    try {
+
+        const { page: pageValue, genre, platform, company, initial_year, final_year, theme, mode } = req.query
+
+        const conditions = [];
+        const params = [];
+        const page = parseInt(pageValue) || 1
+        const limit = 12
+        const offset = (page - 1) * limit
+
+        if (genre?.length) {
+            conditions.push('ge.name IN (?)');
+            params.push(genre);
+        }
+
+        if (platform?.length) {
+            conditions.push('p.name IN (?)');
+            params.push(platform);
+        }
+
+        if (company?.length) {
+            conditions.push('g.company IN (?)');
+            params.push(company);
+        }
+
+        if (theme?.length) {
+            conditions.push('t.name IN (?)');
+            params.push(theme);
+        }
+
+        if (mode?.length) {
+            conditions.push('g.mode IN (?)');
+            params.push(mode);
+        }
+
+        if (initial_year && final_year) {
+            conditions.push('g.first_release_date BETWEEN ? AND ?');
+            params.push(initial_year, final_year);
+        }
+
+        const query = `
+            SELECT DISTINCT g.*, ANY_VALUE(c.url) AS 'image', ANY_VALUE(ge.name) AS 'genre'
+            FROM games g
+            LEFT JOIN game_themes gt ON g.id = gt.id
+            LEFT JOIN themes t ON gt.theme = t.id
+            LEFT JOIN covers c ON g.id = c.game
+            LEFT JOIN game_platforms gp ON g.id = gp.id
+            LEFT JOIN platforms p ON gp.platform = p.id
+            LEFT JOIN game_genres gg ON g.id = gg.id
+            LEFT JOIN genres ge ON gg.genre = ge.id
+            LEFT JOIN game_modes gm ON g.id = gm.id
+            LEFT JOIN modes m ON gm.mode = m.id
+            ${conditions.length ? `WHERE ${conditions.join(' AND ')}` : ''}
+            GROUP BY g.id
+            LIMIT ? OFFSET ?
+        `
+
+        const [response] = await pool.promise().query(query, [...params, limit + 1, offset])
+
+        const data = response.map((game) => ({
+            ...game,
+
+            image: game.image
+                ? `https:${game.image}`
+                : game.image,
+
+            rating: game.rating
+                ? (game.rating / 20).toFixed(1)
+                : game.rating,
+
+            total_rating: game.total_rating
+                ? (game.total_rating / 20).toFixed(1)
+                : game.total_rating
+        }))
+
+        let hasMore = false;
+        if (data.length > limit) hasMore = true
         
+        const gamesData = data.slice(0, limit)
+
+        res.send({ data: gamesData, hasMore, nextPage: page + 1 });
+
+
 
     } catch (error) {
         console.error('Error fetching games:', error);

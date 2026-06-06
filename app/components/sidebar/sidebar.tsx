@@ -39,6 +39,7 @@ export default function Sidebar(
             <div className={styles.filters} >
                 <h4>Filters</h4>
                 <button className={styles.clear}>Clear</button>
+                <button>Strict Search</button>
             </div>
             <div>
                 <div className={styles.dropdownHeader} onClick={() => toggleSection('genre')}>
