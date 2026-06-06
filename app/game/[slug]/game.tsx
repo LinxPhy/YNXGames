@@ -4,6 +4,7 @@ import Media from './components/media/media'
 import Navigation from './components/navigation/navigation'
 import Overview from './components/overview/overview'
 import Ratings from './components/ratings/ratings'
+import Recommendations from './components/recommendations/recommendations'
 import styles from './page.module.css'
 
 export default function Game({ game }: { game: GameProps }) {
@@ -14,6 +15,7 @@ export default function Game({ game }: { game: GameProps }) {
     const overview = { play }
     const details = { themes, genres, platforms, companies, modes, franchises, collections, play }
     const ratings = { play }
+    const similarGames = { similar_games }
 
     return (
         <div className={styles.content}>
@@ -23,6 +25,7 @@ export default function Game({ game }: { game: GameProps }) {
             <Overview data={overview} />
             <Details data={details} />
             <Ratings data={ratings} />
+            <Recommendations data={similarGames} />
         </div>
     )
 }

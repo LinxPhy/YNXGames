@@ -9,7 +9,7 @@ interface HeaderMessage {
     span: string;
 }
 
-export default function GamesSections({ games }: { games: any }) {
+export default function GamesSections({ games, headerMessages }: { games: any; headerMessages: HeaderMessage[] }) {
 
     const { action, fantasy, mystery, open_world, new_releases, random, popular, old_games } = games
 
@@ -24,17 +24,6 @@ export default function GamesSections({ games }: { games: any }) {
         random,
     };
 
-    const headerMessages = [
-        { name: "popular", h2: "Popular Games", span: "Explore some of the most popular games of all time" },
-        { name: "new_releases", h2: "New Releases", span: "View the latest releases" },
-        { name: "random", h2: "Random Game", span: "Still confused? Try a random game" },
-        { name: "old_games", h2: "Old Games", span: "Discover old gems" },
-        { name: "action", h2: "Action Games", span: "Try an action-packed experience" },
-        { name: "fantasy", h2: "Fantasy Games", span: "Feeling magical? Try a fantasy game" },
-        { name: "mystery", h2: "Mystery Games", span: "Feeling like a detective? Maybe a mystery game" },
-        { name: "open_world", h2: "Open World Games", span: "Experience open world games" },
-    ]
-
     return (
         <div className={styles.gamesContainer}>
 
@@ -45,7 +34,6 @@ export default function GamesSections({ games }: { games: any }) {
                     <section key={section.name} className={styles.games}>
                         <div className={styles.gamesHeader}>
                             <h2>{section.h2}</h2>
-                            <span>{section.span}</span>
                         </div>
 
                         <Carousel>

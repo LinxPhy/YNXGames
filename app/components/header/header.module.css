@@ -6,15 +6,18 @@
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    /* justify-content: space-between; */
     padding: 0 40px;
     border-bottom: 1px solid var(--dark);
+    gap: 2rem;
 }
 
 .header nav{
     display: flex;
     align-items: center;
     gap: 2rem;
+    flex-shrink: 0;
 }
 
 .header nav a{
@@ -33,6 +36,7 @@
 .title{
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     gap: 0.5rem;
 }
 
@@ -41,4 +45,53 @@
     font-size: 1.5rem;
     font-weight: 700;
     display: flex;
+}
+
+.title h1 a span{
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.searchContainer{
+    /* width: 100%; */
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchWrapper{
+    position: relative;
+    max-width: 400px;  
+    width: 100%;  
+}
+
+.search{
+    width: 100%;
+    padding: 1rem 5.5rem 1rem 0.8rem;
+    border: 1px solid var(--dark);
+    border-radius: 0.5rem;
+    background-color: var(--dark);
+    color: var(--light);
+    font-size: 1rem;
+}
+
+.searchButton{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    height: 70%;
+}
+
+.searchButton:hover{
+    background-color: var(--white);
+    color: var(--primary);
 }

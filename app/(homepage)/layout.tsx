@@ -10,7 +10,7 @@ export default async function HomeLayout({ children }: { children: React.ReactNo
 
     return (
         <>
-            <Sidebar genres={genres} platforms={platforms} companies={companies} themes={themes} modes={modes} />
+            {/* <Sidebar genres={genres} platforms={platforms} companies={companies} themes={themes} modes={modes} /> */}
             {children}
         </>
     )
