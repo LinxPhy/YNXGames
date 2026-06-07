@@ -1,7 +1,8 @@
 'use client'
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './sidebar.module.css'
 import TwoRange from '../range/range';
+import { ExploreContextProvider } from '@/app/explore/exploreContext';
 
 export default function Sidebar(
     { genres, platforms, companies, themes, modes }: {
@@ -13,10 +14,11 @@ export default function Sidebar(
     }
 ) {
 
+    const { filters, setFilters }: any = useContext(ExploreContextProvider);
+
     const [Genres, setGenres] = useState(genres.slice(0, 5));
     const [Companies, setCompanies] = useState(companies.slice(0, 5));
     const [Themes, setThemes] = useState(themes.slice(0, 5));
-
 
     const [OpenSections, setOpenSections] = useState({
         genre: true,
@@ -39,7 +41,7 @@ export default function Sidebar(
             <div className={styles.filters} >
                 <h4>Filters</h4>
                 <button className={styles.clear}>Clear</button>
-                <button>Strict Search</button>
+                <button className={styles.clear}>Strict Search</button>
             </div>
             <div>
                 <div className={styles.dropdownHeader} onClick={() => toggleSection('genre')}>
@@ -50,7 +52,7 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.genre ? styles.open : styles.closed}`}>
                     <ul>
                         {Genres && Genres.map((genre: Genre) => (
-                            <li key={genre.id}>
+                            <li key={genre.id} onClick={() => setFilters({ ...filters, genres: filters.genres.includes(genre.id) ? filters.genres.filter((id: number) => id !== genre.id) : [...filters.genres, genre.id] })} >
                                 <input type="checkbox" id={genre.id.toString()} name={genre.name} value={genre.id} />
                                 <label htmlFor={genre.id.toString()}>{genre.name}</label>
                             </li>
@@ -75,7 +77,7 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.platform ? styles.open : styles.closed}`}>
                     <ul>
                         {platforms && platforms.map((platform: Platform) => (
-                            <li key={platform.id}>
+                            <li key={platform.id} onClick={() => setFilters({ ...filters, platforms: filters.platforms.includes(platform.id) ? filters.platforms.filter((id: number) => id !== platform.id) : [...filters.platforms, platform.id] })}>
                                 <input type="checkbox" id={platform.id.toString()} name={platform.name} value={platform.id} />
                                 <label htmlFor={platform.id.toString()}>{platform.name}</label>
                             </li>
@@ -92,7 +94,7 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.company ? styles.open : styles.closed}`}>
                     <ul>
                         {Companies && Companies.map((company: Company) => (
-                            <li key={company.id}>
+                            <li key={company.id} onClick={() => setFilters({ ...filters, companies: filters.companies.includes(company.id) ? filters.companies.filter((id: number) => id !== company.id) : [...filters.companies, company.id] })}>
                                 <input type="checkbox" id={company.id.toString()} name={company.name} value={company.id} />
                                 <label htmlFor={company.id.toString()}>{company.name}</label>
                             </li>
@@ -126,7 +128,7 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.theme ? styles.open : styles.closed}`}>
                     <ul>
                         {Themes && Themes.map((theme: Theme) => (
-                            <li key={theme.id}>
+                            <li key={theme.id} onClick={() => setFilters({ ...filters, themes: filters.themes.includes(theme.id) ? filters.themes.filter((id: number) => id !== theme.id) : [...filters.themes, theme.id] })}>
                                 <input type="checkbox" id={theme.id.toString()} name={theme.name} value={theme.id} />
                                 <label htmlFor={theme.id.toString()}>{theme.name}</label>
                             </li>
@@ -150,7 +152,7 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.mode ? styles.open : styles.closed}`}>
                     <ul>
                         {modes && modes.map((mode: Mode) => (
-                            <li key={mode.id}>
+                            <li key={mode.id} onClick={() => setFilters({ ...filters, modes: filters.modes.includes(mode.id) ? filters.modes.filter((id: number) => id !== mode.id) : [...filters.modes, mode.id] })}>
                                 <input type="checkbox" id={mode.id.toString()} name={mode.name} value={mode.id} />
                                 <label htmlFor={mode.id.toString()}>{mode.name}</label>
                             </li>

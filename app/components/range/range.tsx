@@ -1,12 +1,15 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from '@/app/components/sidebar/sidebar.module.css'
 import { Range, getTrackBackground } from "react-range";
+import { ExploreContextProvider } from "@/app/explore/exploreContext";
 
 export default function TwoRange() {
 
-    const [values, setValues] = useState([2015, 2023]);
+    const [values, setValues] = useState([2011, 2026]);
     const [mounted, setMounted] = useState(false);
+
+    const { filters, setFilters }: any = useContext(ExploreContextProvider);
 
     useEffect(() => setMounted(true), []);
 
@@ -67,6 +70,17 @@ export default function TwoRange() {
             <div className={styles.values}>
                 <p>{values[0]}</p>
                 <p>{values[1]}</p>
+            </div>
+
+            <div style={{ marginTop: "1rem" }}>
+                <ul>
+                    <li onClick={(prev) => {
+                        setFilters({ ...filters, unknown_releases: !filters.unknown_releases })
+                    }} >
+                        <input type="checkbox" id="unknown" defaultChecked={filters.unknown_releases} />
+                        <label htmlFor="unknown">Include unknown releases </label>
+                    </li>
+                </ul>
             </div>
 
         </div>

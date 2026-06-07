@@ -1,7 +1,5 @@
 
-
-export default async function getGames (
-    page: number,
+interface Filters {
     genre: string,
     platform: string,
     company: string,
@@ -9,7 +7,12 @@ export default async function getGames (
     final_year: string,
     theme: string,
     mode: string
-) {
+}
+
+export default async function getGames (filters: Filters, page: number) {
+
+    const { genre, platform, company, initial_year, final_year, theme, mode } = filters
+
     const response = await fetch(`${process.env.SERVER_URL}/explore?` +
         new URLSearchParams({
             page: page.toString(),
@@ -24,3 +27,4 @@ export default async function getGames (
         
     return response.json();
 }
+

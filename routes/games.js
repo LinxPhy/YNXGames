@@ -276,7 +276,12 @@ app.get('/api/popular', async (req, res) => {
     try {
 
         const query = `
-            SELECT DISTINCT g.*, ANY_VALUE(c.url) AS 'image', ANY_VALUE(ge.name) AS 'genre'
+            SELECT 
+                DISTINCT g.*, 
+                ANY_VALUE(c.url) AS 'image', 
+                ANY_VALUE(ge.name) AS 'genre',
+                c.width,
+                c.height
             FROM games g
             LEFT JOIN game_themes gt ON g.id = gt.id
             LEFT JOIN themes t ON gt.theme = t.id
@@ -290,7 +295,7 @@ app.get('/api/popular', async (req, res) => {
                     180259, 1905, 115, 372158, 387369,
                     324852, 121, 17269, 294041, 228530
                 )
-            GROUP BY g.id
+            GROUP BY g.id, c.width, c.height
         `
 
         const [response] = await pool.promise().query(query)
@@ -300,7 +305,7 @@ app.get('/api/popular', async (req, res) => {
             ...game,
 
             image: game.image
-                ? `https:${game.image}`
+                ? `https:${game.image.replace('t_thumb', 't_1080p')}`
                 : game.image,
 
             rating: game.rating
