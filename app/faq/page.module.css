@@ -1,0 +1,43 @@
+
+.faq{
+    max-width: 1680px;
+    width: 100%;
+    margin: 0 auto;
+    gap: 1rem;
+    min-height: calc(100vh - 80px);
+    /* padding: 1rem; */
+}
+
+.faq h1{
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.content .section{
+    background-color: var(--dark);
+    padding: 2rem;
+    border-radius: 0.5rem;
+}
+
+.content a{
+    color: var(--primary);
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.content h3{
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.content p{
+    font-size: 1rem;
+    line-height: 1.3rem;
+    color: var(--light);
+}
