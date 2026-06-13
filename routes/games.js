@@ -3,6 +3,7 @@ const axios = require('axios');
 const NodeCache = require('node-cache')
 const cache = require('../utils/cache')
 const { pool } = require('../scripts/db');
+const mysql = require('mysql2');
 const app = express();
 
 // const cache = new NodeCache({
@@ -36,18 +37,36 @@ app.get('/api/filters', async (req, res) => {
             SELECT id, name FROM modes
         `
 
+        const query6 = `
+            SELECT YEAR(first_release_date) AS 'initial_year' FROM games
+            WHERE first_release_date IS NOT NULL 
+            ORDER BY first_release_date ASC
+            LIMIT 1;
+        `
+
+        const query7 = `
+            SELECT YEAR(first_release_date) AS 'final_year' FROM games
+            WHERE first_release_date IS NOT NULL 
+            ORDER BY first_release_date DESC
+            LIMIT 1;
+        `
+
         const [
             [platforms],
             [genres],
             [companies],
             [themes],
             [modes],
+            [initial_year],
+            [final_year]
         ] = await Promise.all([
             pool.promise().query(query),
             pool.promise().query(query2),
             pool.promise().query(query3),
             pool.promise().query(query4),
             pool.promise().query(query5),
+            pool.promise().query(query6),
+            pool.promise().query(query7)
         ]);
 
         const filters = {
@@ -56,6 +75,8 @@ app.get('/api/filters', async (req, res) => {
             companies,
             themes,
             modes,
+            initial_year: initial_year[0].initial_year,
+            final_year: final_year[0].final_year
         };
 
 
@@ -331,43 +352,52 @@ app.get('/api/explore', async (req, res) => {
 
     try {
 
-        const { page: pageValue, genre, platform, company, initial_year, final_year, theme, mode } = req.query
+        const { page: pageValue, genre, platform, company, theme, mode, initial_year, final_year, search_type, unknown_releases } = req.query
 
         const conditions = [];
         const params = [];
         const page = parseInt(pageValue) || 1
-        const limit = 12
+        const limit = 20
         const offset = (page - 1) * limit
 
         if (genre?.length) {
-            conditions.push('ge.name IN (?)');
+            conditions.push('ge.id IN (?)');
             params.push(genre);
         }
 
         if (platform?.length) {
-            conditions.push('p.name IN (?)');
+            conditions.push('p.id IN (?)');
             params.push(platform);
         }
 
         if (company?.length) {
-            conditions.push('g.company IN (?)');
+            conditions.push('g.id IN (?)'); // needs to be changed when companies table is created
             params.push(company);
         }
 
         if (theme?.length) {
-            conditions.push('t.name IN (?)');
+            conditions.push('t.id IN (?)');
             params.push(theme);
         }
 
         if (mode?.length) {
-            conditions.push('g.mode IN (?)');
+            conditions.push('m.id IN (?)');
             params.push(mode);
         }
 
-        if (initial_year && final_year) {
-            conditions.push('g.first_release_date BETWEEN ? AND ?');
-            params.push(initial_year, final_year);
+        if (initial_year) {
+            conditions.push('g.first_release_date >= YEAR(?)');
+            const year = `${initial_year}-01-01`;
+            params.push(year);
         }
+
+        if (final_year) {
+            conditions.push('g.first_release_date <= YEAR(?)');
+            const year = `${final_year}-12-31`;
+            params.push(year);
+        }
+
+        const searchTypeValue = search_type === 'similar' ? ' OR ' : ' AND ';
 
         const query = `
             SELECT DISTINCT g.*, ANY_VALUE(c.url) AS 'image', ANY_VALUE(ge.name) AS 'genre'
@@ -381,10 +411,13 @@ app.get('/api/explore', async (req, res) => {
             LEFT JOIN genres ge ON gg.genre = ge.id
             LEFT JOIN game_modes gm ON g.id = gm.id
             LEFT JOIN modes m ON gm.mode = m.id
-            ${conditions.length ? `WHERE ${conditions.join(' AND ')}` : ''}
+            ${conditions.length ? `WHERE ${conditions.join(searchTypeValue)}` : ''}
             GROUP BY g.id
             LIMIT ? OFFSET ?
         `
+
+        const fullQuery = mysql.format(query, [...params, limit + 1, offset]);
+        console.log(fullQuery);
 
         const [response] = await pool.promise().query(query, [...params, limit + 1, offset])
 
@@ -392,7 +425,7 @@ app.get('/api/explore', async (req, res) => {
             ...game,
 
             image: game.image
-                ? `https:${game.image}`
+                ? `https:${game.image.replace('t_thumb', 't_1080p')}`
                 : game.image,
 
             rating: game.rating
@@ -409,7 +442,7 @@ app.get('/api/explore', async (req, res) => {
         
         const gamesData = data.slice(0, limit)
 
-        res.send({ data: gamesData, hasMore, nextPage: page + 1 });
+        res.send({ data: gamesData, currentPage: page, hasMore, nextPage: page + 1 });
 
 
 

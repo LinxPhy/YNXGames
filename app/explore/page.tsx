@@ -7,17 +7,14 @@ import { ExploreContext } from './exploreContext';
 export default async function ExplorePage() {
 
     const request = await axios.get(`${process.env.SERVER_URL}/filters`);
-    const request2 = await axios.get(`${process.env.SERVER_URL}/popular`);
-
     const data = request.data;
-    const popular = request2.data;
 
-    const { genres, platforms, companies, themes, modes } = data.filters;
+    const { genres, platforms, companies, themes, modes, initial_year, final_year } = data.filters;
 
     return (
         <div className={styles.content}>
-            <ExploreContext>
-                <Sidebar genres={genres} platforms={platforms} companies={companies} themes={themes} modes={modes} />
+            <ExploreContext min={initial_year} max={final_year}>
+                <Sidebar genres={genres} platforms={platforms} companies={companies} themes={themes} modes={modes} initial_year={initial_year} final_year={final_year} />
                 <Explore  />
             </ExploreContext>
         </div>

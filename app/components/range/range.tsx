@@ -4,21 +4,26 @@ import styles from '@/app/components/sidebar/sidebar.module.css'
 import { Range, getTrackBackground } from "react-range";
 import { ExploreContextProvider } from "@/app/explore/exploreContext";
 
-export default function TwoRange() {
-
-    const [values, setValues] = useState([2011, 2026]);
-    const [mounted, setMounted] = useState(false);
+export default function TwoRange({ initial_year, final_year }: { initial_year: number, final_year: number }) {
 
     const { filters, setFilters }: any = useContext(ExploreContextProvider);
 
+    const [values, setValues] = useState([filters.initial_year, filters.final_year]);
+    const [mounted, setMounted] = useState(false);
+
     useEffect(() => setMounted(true), []);
+
+    useEffect(() => setValues([filters.initial_year, filters.final_year]), [filters]);
+
+    function HandleRangeChange(values: number[]) {
+        setFilters({ ...filters, initial_year: values[0], final_year: values[1] });
+    }
 
     if (!mounted) {
         return (
             <div style={{ height: 60, width: "90%" }} />
         );
     }
-
     return (
         <div className={styles.range} >
 
@@ -27,10 +32,11 @@ export default function TwoRange() {
             <Range
                 label="Select your value"
                 step={1}
-                min={2011}
-                max={2026}
+                min={initial_year}
+                max={final_year}
                 values={values}
                 onChange={(values) => setValues(values)}
+                onFinalChange={(values) => HandleRangeChange(values)}
                 renderTrack={({ props, children }) => (
                     <div
                         {...props}
@@ -43,8 +49,8 @@ export default function TwoRange() {
                             background: getTrackBackground({
                                 values,
                                 colors: ["var(--dark)", "var(--primary)", "var(--dark)"],
-                                min: 2011,
-                                max: 2026
+                                min: initial_year,
+                                max: final_year
                             })
 
                         }}
@@ -74,10 +80,21 @@ export default function TwoRange() {
 
             <div style={{ marginTop: "1rem" }}>
                 <ul>
-                    <li onClick={(prev) => {
+                    {/* <li onClick={() => {
                         setFilters({ ...filters, unknown_releases: !filters.unknown_releases })
                     }} >
                         <input type="checkbox" id="unknown" defaultChecked={filters.unknown_releases} />
+                        <label htmlFor="unknown">Include unknown releases </label>
+                    </li> */}
+                    <li>
+                        <input 
+                            type="checkbox" 
+                            id="unknown" 
+                            checked={filters.unknown_releases} 
+                            onChange={() => {
+                                setFilters({ ...filters, unknown_releases: !filters.unknown_releases })
+                            }}
+                        />
                         <label htmlFor="unknown">Include unknown releases </label>
                     </li>
                 </ul>

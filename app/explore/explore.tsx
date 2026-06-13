@@ -1,11 +1,12 @@
 'use client'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import getGames from './getExploreGames'
 import styles from './page.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
+import Navigation from './navigation'
 import { ExploreContextProvider } from './exploreContext'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 const getPopularGames = async () => {
@@ -17,45 +18,38 @@ export default function Explore() {
 
     const searchParams = useSearchParams();
     const router = useRouter()
-    
+
     const { filters }: any = useContext(ExploreContextProvider);
-    
-    const initialQuery = 
-        searchParams.get('genres') || 
-        searchParams.get('platforms') || 
-        searchParams.get('companies') || 
-        searchParams.get('themes') || 
-        searchParams.get('modes') || 
-        searchParams.get('initial_year') || 
-        searchParams.get('final_year') || 
-        searchParams.get('search_type') ||
-        '';
+    const searchQuery = searchParams.toString()
+    const page = searchParams.get('page') || 1
 
     const { data: popularGames, isLoading: isLoadingPopularGames } = useQuery({
         queryKey: ['popular-games'],
         queryFn: getPopularGames,
         staleTime: Infinity,
         refetchOnWindowFocus: false,
-        enabled: initialQuery.length === 0
+        enabled: searchQuery == '',
     });
 
     const { data: exploreGames, isLoading: isLoadingExploreGames } = useQuery({
-        queryKey: ['explore'],
-        queryFn: ({ pageParam } : any) => getGames(filters, pageParam),
-        enabled: initialQuery.length > 0,
+        queryKey: ['explore', searchQuery],
+        queryFn: ({ pageParam = page }: any) => getGames(filters, pageParam),
+        enabled: searchQuery !== '',
         refetchOnWindowFocus: false,
-        placeholderData: (prev) => prev
+        // placeholderData: (prev) => prev
     })
 
-    if (isLoadingPopularGames) {
+    if (isLoadingExploreGames || isLoadingPopularGames) {
         return (
-            <div className={styles.loading}>
-                <h1>Loading...</h1>
+            <div className={styles.games}>
+                {Array.from({ length: 20 }).map((_, index) => (
+                    <div key={index} className={`${styles.skeleton}`}></div>
+                ))}
             </div>
         )
     }
 
-    const games = initialQuery.length > 0 ? exploreGames ?? [] : popularGames ?? []
+    const games = searchQuery !== '' ? exploreGames.data ?? [] : popularGames ?? []
 
     return (
         <div className={styles.explore}>
@@ -99,6 +93,12 @@ export default function Explore() {
 
                 ))}
             </div>
+            
+            <Navigation
+                currentPage={exploreGames?.currentPage || 1}
+                hasMore={exploreGames?.hasMore|| false}
+                nextPage={exploreGames?.nextPage || 1}
+            />
 
         </div>
     )

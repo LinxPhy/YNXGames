@@ -3,14 +3,17 @@ import { useContext, useState } from 'react';
 import styles from './sidebar.module.css'
 import TwoRange from '../range/range';
 import { ExploreContextProvider } from '@/app/explore/exploreContext';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export default function Sidebar(
-    { genres, platforms, companies, themes, modes }: {
+    { genres, platforms, companies, themes, modes, initial_year, final_year }: {
         genres: Genre[],
         platforms: Platform[],
         companies: Company[],
         themes: Theme[],
-        modes: Mode[]
+        modes: Mode[],
+        initial_year: number,
+        final_year: number
     }
 ) {
 
@@ -29,6 +32,10 @@ export default function Sidebar(
         mode: true
     });
 
+    const router = useRouter()
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
     const toggleSection = (section: keyof typeof OpenSections) => {
         setOpenSections((prev) => ({
             ...prev,
@@ -36,12 +43,91 @@ export default function Sidebar(
         }));
     };
 
+    function HandleApply() {
+
+        const params = new URLSearchParams();
+
+        if (filters.genre.length) {
+            params.set('genre', filters.genre.join(','));
+        }
+
+        if (filters.platform.length) {
+            params.set('platform', filters.platform.join(','));
+        }
+
+        if (filters.company.length) {
+            params.set('company', filters.company.join(','));
+        }
+
+        if (filters.theme.length) {
+            params.set('theme', filters.theme.join(','));
+        }
+
+        if (filters.mode.length) {
+            params.set('mode', filters.mode.join(','));
+        }
+
+        if (filters.initial_year) {
+            params.set('initial_year', filters.initial_year);
+        }
+
+        if (filters.final_year) {
+            params.set('final_year', filters.final_year);
+        }
+
+        if (filters.search_type) {
+            params.set('search_type', filters.search_type);
+        }
+
+        if (filters.unknown_releases) {
+            params.set('unknown_releases', filters.unknown_releases);
+        }
+
+        router.push(`${pathname}?${params.toString()}`);
+
+    }
+
+    function HandleSearchType(type: string) {
+
+        const params = new URLSearchParams(searchParams.toString());
+        // update params not replace
+
+        params.set('search_type', type);
+        router.replace(`${pathname}?${params.toString()}`);
+
+    }
+
+    function ClearFilters() {
+
+        setFilters({ 
+                genre: [], 
+                platform: [], 
+                company: [], 
+                theme: [], 
+                mode: [], 
+                initial_year: initial_year, 
+                final_year: final_year, 
+                search_type: 'exact', 
+                unknown_releases: true 
+            });
+    }
+
     return (
         <aside className={styles.sidebar}>
             <div className={styles.filters} >
                 <h4>Filters</h4>
-                <button className={styles.clear}>Clear</button>
-                <button className={styles.clear}>Strict Search</button>
+                <button className={styles.clear} onClick={ClearFilters}>Clear</button>
+                {filters.search_type == 'exact' ? (
+                    <>
+                        <button className={styles.clear} onClick={() => { HandleSearchType('similar'); setFilters({ ...filters, search_type: 'similar' }) }}>Exact Matches</button>
+                        <span style={{ textAlign: 'center' }}>Match all selected filters</span>
+                    </>
+                ) :
+                    <>
+                        <button className={styles.clear} onClick={() => { HandleSearchType('exact'); setFilters({ ...filters, search_type: 'exact' }) }}>Similar Matches</button>
+                        <span style={{ textAlign: 'center' }}>Match any selected filters</span>
+                    </>
+                }
             </div>
             <div>
                 <div className={styles.dropdownHeader} onClick={() => toggleSection('genre')}>
@@ -52,9 +138,26 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.genre ? styles.open : styles.closed}`}>
                     <ul>
                         {Genres && Genres.map((genre: Genre) => (
-                            <li key={genre.id} onClick={() => setFilters({ ...filters, genres: filters.genres.includes(genre.id) ? filters.genres.filter((id: number) => id !== genre.id) : [...filters.genres, genre.id] })} >
-                                <input type="checkbox" id={genre.id.toString()} name={genre.name} value={genre.id} />
-                                <label htmlFor={genre.id.toString()}>{genre.name}</label>
+                            // <li key={genre.id} onClick={() => setFilters({ ...filters, genre: filters.genre.includes(genre.id) ? filters.genre.filter((id: number) => id !== genre.id) : [...filters.genre, genre.id] })} >
+                            //     <input type="checkbox" id={genre.id.toString()} defaultChecked={filters.genre.includes(genre.id)} name={genre.name} value={genre.id} />
+                            //     <label htmlFor={genre.id.toString()}>{genre.name}</label>
+                            // </li>
+                            <li key={genre.id}>
+                                <input
+                                    type="checkbox" id={genre.id.toString()} checked={filters.genre.includes(genre.id)}
+                                    onChange={() =>
+                                        setFilters({
+                                            ...filters,
+                                            genre: filters.genre.includes(genre.id)
+                                                ? filters.genre.filter((id: number) => id !== genre.id)
+                                                : [...filters.genre, genre.id],
+                                        })
+                                    }
+                                />
+
+                                <label htmlFor={genre.id.toString()}>
+                                    {genre.name}
+                                </label>
                             </li>
                         ))}
                     </ul>
@@ -77,9 +180,27 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.platform ? styles.open : styles.closed}`}>
                     <ul>
                         {platforms && platforms.map((platform: Platform) => (
-                            <li key={platform.id} onClick={() => setFilters({ ...filters, platforms: filters.platforms.includes(platform.id) ? filters.platforms.filter((id: number) => id !== platform.id) : [...filters.platforms, platform.id] })}>
-                                <input type="checkbox" id={platform.id.toString()} name={platform.name} value={platform.id} />
-                                <label htmlFor={platform.id.toString()}>{platform.name}</label>
+                            // <li key={platform.id} onClick={() => setFilters({ ...filters, platform: filters.platform.includes(platform.id) ? filters.platform.filter((id: number) => id !== platform.id) : [...filters.platform, platform.id] })}>
+                            //     <input type="checkbox" id={platform.id.toString()} defaultChecked={filters.platform.includes(platform.id)} name={platform.name} value={platform.id} />
+                            //     <label htmlFor={platform.id.toString()}>{platform.name}</label>
+                            // </li>
+                            <li key={platform.id}>
+                                <input
+                                    type="checkbox"
+                                    id={`platform_${platform.id.toString()}`}
+                                    checked={filters.platform.includes(platform.id)}
+                                    onChange={() =>
+                                        setFilters({
+                                            ...filters,
+                                            platform: filters.platform.includes(platform.id)
+                                                ? filters.platform.filter((id: number) => id !== platform.id)
+                                                : [...filters.platform, platform.id],
+                                        })
+                                    }
+                                />
+                                <label htmlFor={`platform_${platform.id.toString()}`}>
+                                    {platform.name}
+                                </label>
                             </li>
                         ))}
                     </ul>
@@ -94,9 +215,27 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.company ? styles.open : styles.closed}`}>
                     <ul>
                         {Companies && Companies.map((company: Company) => (
-                            <li key={company.id} onClick={() => setFilters({ ...filters, companies: filters.companies.includes(company.id) ? filters.companies.filter((id: number) => id !== company.id) : [...filters.companies, company.id] })}>
-                                <input type="checkbox" id={company.id.toString()} name={company.name} value={company.id} />
-                                <label htmlFor={company.id.toString()}>{company.name}</label>
+                            // <li key={company.id} onClick={() => setFilters({ ...filters, company: filters.company.includes(company.id) ? filters.company.filter((id: number) => id !== company.id) : [...filters.company, company.id] })}>
+                            //     <input type="checkbox" id={company.id.toString()} defaultChecked={filters.company.includes(company.id)} name={company.name} value={company.id} />
+                            //     <label htmlFor={company.id.toString()}>{company.name}</label>
+                            // </li>
+                            <li key={company.id}>
+                                <input
+                                    type="checkbox"
+                                    id={`company_${company.id.toString()}`}
+                                    checked={filters.company.includes(company.id)}
+                                    onChange={() =>
+                                        setFilters({
+                                            ...filters,
+                                            company: filters.company.includes(company.id)
+                                                ? filters.company.filter((id: number) => id !== company.id)
+                                                : [...filters.company, company.id],
+                                        })
+                                    }
+                                />
+                                <label htmlFor={`company_${company.id.toString()}`}>
+                                    {company.name}
+                                </label>
                             </li>
                         ))}
                     </ul>
@@ -116,7 +255,7 @@ export default function Sidebar(
                 </div>
 
                 <div className={`${styles.dropdown} ${OpenSections.year ? styles.open : styles.closed}`}>
-                    <TwoRange />
+                    <TwoRange initial_year={initial_year} final_year={final_year} />
                 </div>
             </div>
             <div>
@@ -128,9 +267,27 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.theme ? styles.open : styles.closed}`}>
                     <ul>
                         {Themes && Themes.map((theme: Theme) => (
-                            <li key={theme.id} onClick={() => setFilters({ ...filters, themes: filters.themes.includes(theme.id) ? filters.themes.filter((id: number) => id !== theme.id) : [...filters.themes, theme.id] })}>
-                                <input type="checkbox" id={theme.id.toString()} name={theme.name} value={theme.id} />
-                                <label htmlFor={theme.id.toString()}>{theme.name}</label>
+                            // <li key={theme.id} onClick={() => setFilters({ ...filters, theme: filters.theme.includes(theme.id) ? filters.theme.filter((id: number) => id !== theme.id) : [...filters.theme, theme.id] })}>
+                            //     <input type="checkbox" id={theme.id.toString()} defaultChecked={filters.theme.includes(theme.id)} name={theme.name} value={theme.id} />
+                            //     <label htmlFor={theme.id.toString()}>{theme.name}</label>
+                            // </li>
+                            <li key={theme.id}>
+                                <input
+                                    type="checkbox"
+                                    id={`theme_${theme.id.toString()}`}
+                                    checked={filters.theme.includes(theme.id)}
+                                    onChange={() =>
+                                        setFilters({
+                                            ...filters,
+                                            theme: filters.theme.includes(theme.id)
+                                                ? filters.theme.filter((id: number) => id !== theme.id)
+                                                : [...filters.theme, theme.id],
+                                        })
+                                    }
+                                />
+                                <label htmlFor={`theme_${theme.id.toString()}`}>
+                                    {theme.name}
+                                </label>
                             </li>
                         ))}
                     </ul>
@@ -152,16 +309,34 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.mode ? styles.open : styles.closed}`}>
                     <ul>
                         {modes && modes.map((mode: Mode) => (
-                            <li key={mode.id} onClick={() => setFilters({ ...filters, modes: filters.modes.includes(mode.id) ? filters.modes.filter((id: number) => id !== mode.id) : [...filters.modes, mode.id] })}>
-                                <input type="checkbox" id={mode.id.toString()} name={mode.name} value={mode.id} />
-                                <label htmlFor={mode.id.toString()}>{mode.name}</label>
+                            // <li key={mode.id} onClick={() => setFilters({ ...filters, mode: filters.mode.includes(mode.id) ? filters.mode.filter((id: number) => id !== mode.id) : [...filters.mode, mode.id] })}>
+                            //     <input type="checkbox" id={mode.id.toString()} defaultChecked={filters.mode.includes(mode.id)} name={mode.name} value={mode.id} />
+                            //     <label htmlFor={mode.id.toString()}>{mode.name}</label>
+                            // </li>
+                            <li key={mode.id}>
+                                <input
+                                    type="checkbox"
+                                    id={`mode_${mode.id.toString()}`}
+                                    checked={filters.mode.includes(mode.id)}
+                                    onChange={() =>
+                                        setFilters({
+                                            ...filters,
+                                            mode: filters.mode.includes(mode.id)
+                                                ? filters.mode.filter((id: number) => id !== mode.id)
+                                                : [...filters.mode, mode.id],
+                                        })
+                                    }
+                                />
+                                <label htmlFor={`mode_${mode.id.toString()}`}>
+                                    {mode.name}
+                                </label>
                             </li>
                         ))}
                     </ul>
                 </div>
             </div>
             <div>
-                <button className={styles.apply}>Apply</button>
+                <button onClick={HandleApply} className={styles.apply}>Apply</button>
             </div>
         </aside>
     )

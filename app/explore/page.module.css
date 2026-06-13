@@ -17,6 +17,29 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     grid-gap: 1.5rem;
+    width: 100%;
+    height: fit-content;
+}
+
+.skeleton {
+    aspect-ratio: 3 / 4;
+    background-color: var(--light);
+    border-radius: 1rem;
+    height: auto;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: var(--skeleton-1);
+    }
+
+    100% {
+        background-color: var(--skeleton-2)
+    }
 }
 
 .games a {
@@ -121,4 +144,40 @@
 
 .rating{
     display: flex;
+}
+
+.navigation {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.navigation button{
+    cursor: pointer;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    width: 200px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.navigation span{
+    font-size: 0.7rem;
+    color: var(--white);
+}
+
+.navigation button:hover{
+    background-color: var(--white);
+    color: var(--primary);
+}
+
+.navigation button:hover span{
+    color: var(--primary);
 }
