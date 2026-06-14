@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
-import "./globals.css";
+import { Toaster } from "react-hot-toast";
 import Header from "./components/header/header";
 import ReactQueryProvider from "./components/reactQueryProvider";
 import Footer from "./components/footer/footer";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "YNXGames",
@@ -25,6 +26,7 @@ export default function RootLayout({
             <Header />
             <main>
               {children}
+              <Toaster toastOptions={{ className: "toast" }} position="top-center" reverseOrder={false} />
             </main>
             <Footer />
           </div>

@@ -169,6 +169,13 @@ CREATE TABLE game_collections (
     collection INT
 );
 
+CREATE TABLE contact (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255),
+    email varchar(255),
+    message TEXT
+)
+
 
 DELETE FROM involved_companies;
 DELETE FROM similar_games;
