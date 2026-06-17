@@ -4,6 +4,7 @@ const cors = require('cors')
 const scripts = require('./routes/scripts')
 const games = require('./routes/games')
 const contact = require('./routes/contact')
+const deepsearch = require('./routes/deepsearch')
 require('./scripts/schedule')
 
 const app = express();
@@ -16,6 +17,7 @@ app.set("trust proxy", 1);
 app.use(scripts)
 app.use(games)
 app.use(contact)
+app.use(deepsearch)
 
 const PORT = process.env.PORT || 3001
 

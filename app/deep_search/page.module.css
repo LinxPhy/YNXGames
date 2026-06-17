@@ -1,0 +1,119 @@
+.deepsearch {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem;
+    min-height: calc(100vh - 80px);
+
+}
+
+.inputs {
+    display: grid;
+    align-items: start;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.inputs>div {
+    display: flex;
+    flex-direction: column;
+}
+
+/* .inputs > div {
+    border: 1px solid var(--light);
+    border-radius: .5rem;
+    padding: 2rem;
+} */
+
+.inputs h3 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: var(--light);
+    font-weight: 400;
+}
+
+.deepsearch textarea {
+    background-color: var(--dark);
+    width: 100%;
+    max-width: 600px;
+    color: var(--white);
+    resize: vertical;
+    border: none;
+    /* border: 1px solid var(--light); */
+    border-radius: .5rem;
+    outline: #000;
+    padding: .8rem 5rem .8rem 2rem;
+    font-size: .8rem;
+}
+
+.deepsearch textarea::placeholder {
+    color: var(--light);
+}
+
+.deepsearch select {
+    background-color: var(--dark);
+    width: 100%;
+    max-width: 600px;
+    color: var(--white);
+    resize: vertical;
+    border: none;
+    /* border: 1px solid var(--light); */
+    border-radius: .5rem;
+    outline: #000;
+    padding: .8rem 5rem .8rem 2rem;
+    font-size: .8rem;
+    cursor: pointer;
+    color: var(--light);
+}
+
+.deepsearch input {
+    background-color: var(--dark);
+    width: 100%;
+    max-width: 600px;
+    color: var(--light);
+    border: none;
+    border-radius: .5rem;
+    outline: #000;
+    padding: .8rem 5rem .8rem 2rem;
+    font-size: .8rem;
+}
+
+.platforms>div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.platform {
+    border: 1px solid var(--light);
+    border-radius: .5rem;
+    padding: .5rem;
+    display: flex;
+    gap: .5rem;
+    cursor: pointer;
+    color: var(--light);
+    font-size: .8rem;
+    background-color: var(--dark);
+}
+
+.platform p{
+    color: var(--light);
+    font-size: 1rem;
+}
+
+.submit {
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
+    width: 100%;
+    color: var(--white);
+    cursor: pointer;
+    border-radius: 1rem;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    margin-top: 1rem;
+    padding: 5px 10px;
+    font-weight: bold;
+    display: flex;
+}
