@@ -29,8 +29,14 @@
 .inputs h3 {
     font-size: 1rem;
     margin-bottom: 1rem;
-    color: var(--light);
+    color: var(--white);
     font-weight: 400;
+}
+
+.search span{
+    width: 100%;
+    text-align: right;
+    margin-top: 0.5rem;
 }
 
 .deepsearch textarea {
@@ -43,8 +49,11 @@
     /* border: 1px solid var(--light); */
     border-radius: .5rem;
     outline: #000;
-    padding: .8rem 5rem .8rem 2rem;
+    /* padding: .8rem 5rem .8rem 2rem; */
+    padding: 1rem;
     font-size: .8rem;
+    min-height: 50px;
+    max-height: 400px;
 }
 
 .deepsearch textarea::placeholder {
@@ -61,7 +70,7 @@
     /* border: 1px solid var(--light); */
     border-radius: .5rem;
     outline: #000;
-    padding: .8rem 5rem .8rem 2rem;
+    padding: 1rem;
     font-size: .8rem;
     cursor: pointer;
     color: var(--light);
@@ -75,8 +84,12 @@
     border: none;
     border-radius: .5rem;
     outline: #000;
-    padding: .8rem 5rem .8rem 2rem;
+    padding: 1rem;
     font-size: .8rem;
+}
+
+.deepsearch input::placeholder {
+    color: var(--light);
 }
 
 .platforms>div {
@@ -116,4 +129,47 @@
     padding: 5px 10px;
     font-weight: bold;
     display: flex;
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.content div{
+    border: 1px solid var(--light);
+    border-radius: .5rem;
+    padding: .5rem;
+    display: flex;
+    gap: .5rem;
+    cursor: pointer;
+    font-size: .8rem;
+    background-color: var(--dark);
+}
+
+.content p{
+    color: var(--light);
+    font-size: 0.8rem;
+}
+
+.similarInput{
+    display: flex;
+    gap: 1rem;
+}
+
+.similarInput button{
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
+    color: var(--white);
+    cursor: pointer;
+    border-radius: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    width: 48.65px;
+    /* font-weight: bold; */
+    display: flex;
+    font-size: 1.5rem;
 }
