@@ -1,48 +1,79 @@
 'use client'
 import { useEffect, useState } from 'react';
-import styles from './page.module.css'
 import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
+import styles from './page.module.css'
 
-const fetchGames = async ({ values, page } : { values: any, page: number }) => {
+const fetchGames = async ({ values, page, prevGames }: { values: any, page: number, prevGames: any }) => {
+
+    const input = {
+        search: values.search,
+        platforms: values.platforms.length > 0 ? values.platforms.map((platform: any) => platform.name) : [],
+        genres: values.genres.length > 0 ? values.genres.map((genre: any) => genre.name) : [],
+        themes: values.themes.length > 0 ? values.themes.map((theme: any) => theme.name) : [],
+        similar_games: values.similar_games.length > 0 ? values.similar_games.map((game: any) => game.name) : [],
+    }
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/deepsearch`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ values, page }),
+        body: JSON.stringify({ values: input, page, prevGames }),
     });
 
     return response.json();
 
 }
 
+function MatchingRatingColor(rating: number) {
+    if (!rating) return `${styles['nothing']}`
+    if (rating < 30 ) return `${styles['red']}`
+    if (rating < 50 ) return `${styles['orange']}`
+    if (rating < 70 ) return `${styles['yellow']}`
+    if (rating < 90 ) return `${styles['light-green']}`
+    return `${styles['green']}`
+}
+
 export default function DeepSearch({ data }: { data: any }) {
 
     const { genres, platforms, themes } = data
     const [page, setPage]: any = useState(1);
+    const [visitedPages, setVisitedPages]: any = useState([1]);
+    const [prevGames, setPrevGames]: any = useState("");
     const [similarGames, setSimilarGames]: any = useState("");
 
     const [values, setValues]: any = useState({
         search: '',
-        platforms: [6],
+        platforms: [],
         genres: [],
         themes: [],
         similar_games: [],
     });
 
-    const { data: games, isLoading, isError } = useQuery({
+    const { data: games, isLoading, error } = useQuery({
         queryKey: ['deepsearch', page],
-        queryFn: () => fetchGames({ values, page}),
-        enabled: page > 1,
+        queryFn: () => fetchGames({ values, page, prevGames }),
+        enabled: !visitedPages.includes(page),
         refetchOnWindowFocus: false
     })
 
-    console.log(games)
+    useEffect(() => {
+        if (games) {
+            setPrevGames(games.prevGames)
+            setVisitedPages([...visitedPages, page]);
+        }
+    }, [games]);
+
+    const results = games?.data?.items || [];
+    console.log(results)
 
     return (
         <div className={styles.deepsearch}>
-            <h1>Deep Search</h1>
+            <div className={styles.header}>
+                <Image src={"/icons/stars.png"} alt="Logo" width={32} height={32} className={styles.logo} />
+                <h1>Deep Search</h1>
+            </div>
             {/* <p>Deep search uses AI to find games that can match your criteria. The more specific you are, the better game recommendations you will get. </p> */}
 
             <div className={styles.inputs}>
@@ -54,18 +85,18 @@ export default function DeepSearch({ data }: { data: any }) {
                         placeholder="I am looking for a game that has lots of adventure and action. The game must have magical beasts and be set in a fantasy world"
                         value={values.search}
                         onChange={(e) => setValues({ ...values, search: e.target.value })}
-                        rows={10}
+                        rows={3}
                         maxLength={1000}
                     >
                     </textarea>
                     <span>{values.search.length}/1000</span>
                 </div>
 
-                <div className={styles.platforms}>
+                {/* <div className={styles.platforms}>
                     <h3>What platforms do you want to play on?</h3>
                     <div>
                         {platforms.map((platform: any) => (
-                            <div key={platform.id} className={styles.platform}>
+                            <div key={platform.id} className={styles.platform} onClick={() => setValues({ ...values, platforms: values.platforms.includes(platform) ? values.platforms.filter((p: any) => p.id !== platform.id) : [...values.platforms, platform] })}>
                                 <p>{platform.alternative_name}</p>
                             </div>
                         ))}
@@ -129,7 +160,6 @@ export default function DeepSearch({ data }: { data: any }) {
                         <input type="text" name="similar" value={similarGames} placeholder="Red Dead Redemption 2" id="similar"
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
-                                    // add if game is not in similar games
                                     if (!values.similar_games.includes(e.currentTarget.value)) {
                                         setValues({ ...values, similar_games: [...values.similar_games, e.currentTarget.value] });
                                         e.currentTarget.value = '';
@@ -139,7 +169,6 @@ export default function DeepSearch({ data }: { data: any }) {
                             onChange={(e) => setSimilarGames(e.target.value)}
                         />
                         <button onClick={() => {
-                            // add if game is not in similar games
                             if (!values.similar_games.includes(similarGames) && similarGames !== '') {
                                 setValues({ ...values, similar_games: [...values.similar_games, similarGames] });
                                 setSimilarGames('');
@@ -155,12 +184,78 @@ export default function DeepSearch({ data }: { data: any }) {
                             </div>
                         ))}
                     </div>
+                </div>  */}
+
+                <div className={styles.submitContainer}>
+                    <button className={styles.submit} onClick={() => setPage((page: number) => page + 1)} disabled={isLoading}>
+                        Start Deep Search
+                    </button>
+                </div>
+            </div>
+
+
+            <div className={styles.topMatches}>
+                <div className={styles.header}>
+                    <Image src={"/icons/stars.png"} alt="Logo" width={32} height={32} className={styles.logo} />
+                    <h2>Top Matches</h2>
                 </div>
 
-                <button className={styles.submit} onClick={() => setPage((page: number) => page + 1)}>
-                    Start Deep Search
-                </button>
+                <div className={styles.matches}>
+
+                    {isLoading && <p>Loading...</p>}
+                    {error && <p> No matches found</p>}
+
+                    {results && results.map((game: any, index: number) => (
+                        <div key={index} className={styles.game}>
+
+                            <div className={styles.main}>
+                                <h3>{game.name}</h3>
+
+                                <div className={styles.themes}>
+                                    {game.themes && game.themes.map((theme: any, index: number) => (
+                                        <p key={index} className={styles.theme}>{theme}</p>
+                                    ))}
+                                    {game.genres && game.genres.map((genre: any, index: number) => (
+                                        <p key={index} className={styles.genre}>{genre}</p>
+                                    ))}
+                                </div>
+
+                                <p className={styles.description}>{game.description}</p>
+                                
+                                <div className={styles.game_platforms}>
+                                    {game.platforms && game.platforms.map((platform: any, index: number) => (
+                                        <p key={index} className={styles.game_platform}>{platform}</p>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className={styles.stats}>
+                                <ul>
+                                    <li>
+                                        <h4>Match</h4>
+                                        <p className={`${MatchingRatingColor(game.ai_match)} ${styles.match}`}>{game.ai_match}</p>
+                                    </li>
+
+                                    <li>
+                                        <h4>Release Date</h4>
+                                        <p>{game.release_date}</p>
+                                    </li>
+                                    <li>
+                                        <h4>Developer</h4>
+                                        <p>{game.developer}</p>
+                                    </li>
+                                    <li>
+                                        <h4>Averate Playtime</h4>
+                                        <p>{game.average_play_time}</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
+
+
         </div>
 
     )

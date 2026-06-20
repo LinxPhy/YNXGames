@@ -46,44 +46,102 @@ app.post('/api/deepsearch', async (req, res) => {
         const { values, page, prevGames } = req.body
         const { search, platforms, genres, themes, similar_games } = values
 
-        // const response = await client.responses.create({
-        //     model: 'grok-4.3',
-        //     input: [
-        //         { role: 'system', content: 'You are Grok, a highly intelligent, helpful AI assistant.' },
-        //         { role: 'user', content: 'What is the meaning of life, the universe, and everything?' },
-        //     ]
-        // })
+        if (search.length == 0) return res.status(200).send({ games: [] })
 
-        const prompt = 
+        const platforms_prompts = platforms.length > 0 ? `Platforms: ${platforms.join(', ')}` : `Platforms: Any`
+        const genres_prompts = genres.length > 0 ? `Genres: ${genres.join(', ')}` : `Genres: Any`
+        const themes_prompts = themes.length > 0 ? `Themes: ${themes.join(', ')}` : `Themes: Any`
+        const similar_games_prompts = similar_games.length > 0 ? `Similar Games: ${similar_games.join(', ')}` : `Similar Games: Any`
+
+        const prompt = `
+            You are a video game recommendation engine.
+
+            Find exactly 10 video games matching the criteria below.
+
+            Criteria:
+            - Search: ${search || 'Any'}
+            - Platforms: ${platforms.length ? platforms.join(', ') : 'Any'}
+            - Genres: ${genres.length ? genres.join(', ') : 'Any'}
+            - Themes: ${themes.length ? themes.join(', ') : 'Any'}
+            - Similar Games: ${similar_games.length ? similar_games.join(', ') : 'Any'}
+
+            Excluded Games:
+            ${prevGames && prevGames?.join('\n') || 'None'}
+
+            Rules:
+            1. Return ONLY valid JSON.
+            2. Do NOT wrap JSON in markdown.
+            3. Do NOT include explanations.
+            4. Do NOT include any excluded games.
+            5. Return exactly 10 unique games.
+            6. Never recommend different editions/remasters of the same game in the same response.
+            7. Release date should be in {DateNumber MonthName, Year} format.
+            8. Release date and Developer should be null if not available.
+            9. Game Description should be between 300 characters and 800 characters.
+            10. AI Match should be a score between 0 and 100 about how similar the game is to the search criteria.
+            11. Return results by highest AI Match score.
         `
-            You are a Video Game Identifier, your role is to find a game recommendation that matches the following criteria:
-            Search: ${search}
-            Platforms: ${platforms}
-            Genres: ${genres}
-            Themes: ${themes}
-            Similar Games: ${similar_games}
-            You need to return a list of 10 games that match the criteria and the following
-            - Name
-            - Summary
-            - Genres (up to 5)
-            - Themes (up to 5)
-            - Platforms (up to 5 - most popular)
-            - Release Date (if applicable)
-            Please do not return any other information.
-            Do not include any of the following games in your response: ${prevGames}
-        `
 
-        console.log(prompt)
+        const response = await client.chat.completions.create({
+            model: "grok-4.3",  
+            messages: [
+                {
+                    role: "system",
+                    content: "You are an expert video game recommendation engine."
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ],
+            response_format: {
+                type: "json_schema",
+                json_schema: {
+                    name: "items_list",
+                    strict: true,
+                    schema: {
+                        type: "object",
+                        properties: {
+                            items: {
+                                type: "array",
+                                items: {
+                                    type: "object",
+                                    properties: {
+                                        name: { type: "string" },
+                                        description: { type: "string" },
+                                        genres: {
+                                            type: "array",
+                                            description: "Array of strings"
+                                        },
+                                        themes: {
+                                            type: "array",
+                                            description: "Array of strings"
+                                        },
+                                        platforms: {
+                                            type: "array",
+                                            description: "Array of strings"
+                                        },
+                                        release_date: { type: "string" },
+                                        developer: { type: "string" },
+                                        average_play_time: { type: "string", description: "Range in hours" },
+                                        ai_match: { type: "number", minimum: 0, maximum: 100 }
+                                    },
+                                    required: ["name", "description", "genres", "themes", "platforms", "average_play_time", "release_date", "developer", "ai_match"],
+                                    additionalProperties: false
+                                }
+                            }
+                        },
+                        required: ["items"],
+                        additionalProperties: false
+                    }
+                }
+            }
+        });
 
-        const response = await client.completions.create({
-            model: 'grok-4.3',
-            input: [
-                { role: 'system', content: 'You are Grok, a highly intelligent, helpful AI assistant.' },
-                { role: 'user', content: prompt },
-            ]
-        })
+        const result = JSON.parse(response.choices[0].message.content);
+        const usedGames = result.items.map(item => item.name)
 
-        res.send({ data: response.choices[0].text, page , prevGames })
+        res.send({ data: result, newPage: page, prevGames: usedGames })
 
     } catch (error) {
         console.log(error)
