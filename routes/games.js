@@ -439,7 +439,7 @@ app.get('/api/explore', async (req, res) => {
 
         let hasMore = false;
         if (data.length > limit) hasMore = true
-        
+
         const gamesData = data.slice(0, limit)
 
         res.send({ data: gamesData, currentPage: page, hasMore, nextPage: page + 1 });
@@ -458,6 +458,38 @@ app.get('/api/games_options', async (req, res) => {
     try {
 
         const genres = `SELECT * FROM genres`
+        const themes = `SELECT * FROM themes`
+
+        const [
+            [genresData],
+            [themesData]
+        ] = await Promise.all([
+            pool.promise().query(genres),
+            pool.promise().query(themes)
+        ])
+
+        res.send({ genres: genresData, themes: themesData });
+
+    } catch (error) {
+        console.error('Error fetching games:', error);
+        res.status(500).send({ error: 'Failed to fetch games' });
+    }
+
+})
+
+app.get('/api/return_games/:search_query', async (req, res) => {
+
+    try {
+
+        // const { search_query } = req.params
+        // const page = parseInt(req.query.page)
+        // const limit = parseInt(req.query.limit)
+        // const offset = (page - 1) * limit
+
+        const { search_query } = req.params
+        const { type, page } = req.query
+        const limit = 20
+
 
     } catch (error) {
         console.error('Error fetching games:', error);

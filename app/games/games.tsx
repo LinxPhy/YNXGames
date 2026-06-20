@@ -22,34 +22,7 @@ export default function Games() {
 
 
     return (
-        <div className={styles.container}>
-
-            <div className={styles.categoriesHeader} onClick={() => {
-                open === "category" ? setOpen("") : setOpen("category")
-            }}>
-                <h4>Select a category ▾</h4>
-                <div className={styles.options} style={{ display: open === "category" ? "flex" : "none" }}>
-                    {DefaultOptions().map((option) => (
-                        <button key={option.id}>{option.name}</button>
-                    ))}
-                </div>
-            </div>
-
-            <div className={styles.categoriesHeader} onClick={() => {
-                open === "genre" ? setOpen("") : setOpen("genre")
-            }}>
-                <h4>Select a genre ▾</h4>
-
-                <div className={styles.options} style={{ display: open === "genre" ? "flex" : "none" }}>
-                    {randomOptions.map((option) => (
-                        <button key={option.id}>{option.name}</button>
-                    ))}
-                </div>
-            </div>
-
-            {/* <div className={styles.categoriesHeader}>
-                <h4>Select a theme ▾</h4>
-            </div> */}
+        <div className={styles.games}>
 
         </div>
     )
