@@ -453,4 +453,17 @@ app.get('/api/explore', async (req, res) => {
 
 })
 
+app.get('/api/games_options', async (req, res) => {
+
+    try {
+
+        const genres = `SELECT * FROM genres`
+
+    } catch (error) {
+        console.error('Error fetching games:', error);
+        res.status(500).send({ error: 'Failed to fetch games' });
+    }
+
+})
+
 module.exports = app;

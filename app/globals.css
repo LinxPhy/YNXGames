@@ -16,6 +16,7 @@
     /* --dark: #14131a; */
     --dark: #161723;
     --light: #b5b5b5;
+    --grey: #464450;
     --skeleton-1: #1e1e22;
     --skeleton-2: #2a2a30;
     --white: #fff;
@@ -135,6 +136,8 @@ ul {
 
 main {
     display: flex;
+    padding: 3rem 0;
+    min-height: 100vh;
 }
 
 /* .container{

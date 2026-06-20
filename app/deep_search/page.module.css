@@ -291,7 +291,7 @@
 
 
 .game_platform {
-    background-color: rgb(70, 68, 80);
+    background-color: var(--grey);
     color: var(--white);
     border-radius: .2rem;
     margin-top: .2rem;

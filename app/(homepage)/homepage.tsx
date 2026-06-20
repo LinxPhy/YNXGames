@@ -1,9 +1,8 @@
-import Image from "next/image";
 import styles from "./page.module.css";
 import Categories from "../components/categories/categories";
-import Carousel from "../components/carousel/carousel";
 import GamesSections from "./gamesSections";
 import OtherCategories from "../components/categories/other_categories";
+import Banner from "../components/banner/banner";
 
 export default function HomePage({ games }: { games: any }) {
 
@@ -16,19 +15,19 @@ export default function HomePage({ games }: { games: any }) {
         { id: 6, name: "Survival", url: "/images/survival.jpg", slug: "survival", advert: "Survival Experiences" },
         { id: 7, name: "Puzzle", url: "/images/puzzle.jpg", slug: "puzzle", advert: "Puzzling Enquires" },
         { id: 8, name: "Arcade", url: "/images/arcade.jpg", slug: "arcade", advert: "Classicals" },
+        { id: 18, name: "Fighting", url: "/images/fighting.jpg", slug: "fighting", advert: "Fighting Games" },
     ]
-
-    // fighting games
 
     const otherCategories = [
         { id: 9, name: "Strategy", url: "/images/strategy.jpg", slug: "strategy", advert: "Strategic Conquests" },
         { id: 10, name: "MOBA", url: "/images/moba.jpg", slug: "moba", advert: "Competitive MOBA Battles" },
         { id: 11, name: "Music", url: "/images/music.jpg", slug: "music", advert: "Rhythm and Music Games" },
-        { id: 12, name: "Indie", url: "/images/indie.jpg", slug: "indie", advert: "Independent Games" },
-        { id: 13, name: "Sport", url: "/images/sport.jpg", slug: "sport", advert: "Sports Games" },
-        { id: 14, name: "Turn-based", url: "/images/turn-based.jpg", slug: "turn-based", advert: "Turn-based Games" },
+        { id: 12, name: "Indie", url: "/images/indie.jpg", slug: "indie", advert: "From small teams" },
+        { id: 13, name: "Sport", url: "/images/sport.jpg", slug: "sport", advert: "Sportive Experiences" },
+        { id: 14, name: "Turn-based", url: "/images/turn-based.jpg", slug: "turn-based", advert: "One Turn Games" },
         { id: 15, name: "Simulator", url: "/images/simulator.jpg", slug: "simulator", advert: "Simulator Games" },
         { id: 16, name: "Tactical", url: "/images/tactical.jpg", slug: "tactical", advert: "Tactical Games" },
+        { id: 17, name: "Cards", url: "/images/cards.jpg", slug: "cards", advert: "Card and Board Games" },
     ]
 
     const headerMessages = [
@@ -52,6 +51,7 @@ export default function HomePage({ games }: { games: any }) {
             <GamesSections games={games} headerMessages={headerMessages} />
             <OtherCategories data={otherCategories} />
             <GamesSections games={games} headerMessages={moreHeaderMessages} />
+            <Banner />
         </div>
     );
 }

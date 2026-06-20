@@ -34,6 +34,7 @@ export default function GamesSections({ games, headerMessages }: { games: any; h
                     <section key={section.name} className={styles.games}>
                         <div className={styles.gamesHeader}>
                             <h2>{section.h2}</h2>
+                            <button>▶</button>
                         </div>
 
                         <Carousel>
@@ -55,7 +56,7 @@ export default function GamesSections({ games, headerMessages }: { games: any; h
 
                                             <div className={styles.gameRating}>
                                                 <div className={styles.gameGenre}>
-                                                    <p>{game.genre}</p>
+                                                    <p>{game?.genre || "N/A"}</p>
                                                 </div>
 
                                                 <div className={styles.rating}>

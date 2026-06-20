@@ -1,0 +1,33 @@
+
+
+.container{
+    max-width: 1680px;
+    width: 100%;
+    margin: 0 auto;
+    gap: 1rem;
+    min-height: calc(100vh - 80px);
+    /* padding: 1rem; */
+}
+
+.categoriesHeader{
+    padding: 1rem;
+    background-color: var(--dark);
+    margin-bottom: 0.5rem;
+    /* border-bottom: 1px solid var(--grey); */
+}
+
+.options{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.options button{
+    background-color: var(--grey);
+    border: 1px solid var(--dark);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
