@@ -79,6 +79,35 @@ app.get('/create_modes', async (req, res) => {
 
 })
 
+// player_perspectives
+app.get('/create_player_perspectives', async (req, res) => {
+
+    try {
+
+        const response = await axios.post(`${base}/player_perspectives`, 'fields *; limit 500;',
+            {
+                headers: {
+                    'Client-ID': clientId,
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'text/plain'
+                }
+            })
+
+        const player_perspectives = response.data
+
+        for (const perspective of player_perspectives) {
+            const { id, name, slug, url, created_at, updated_at } = perspective
+            await pool.promise().query('INSERT INTO player_perspectives (id, name, slug, url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)', [id, name, slug, url, UnixToDateTime(created_at), UnixToDateTime(updated_at)])
+        }
+
+        res.send('Player perspectives inserted successfully')
+
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
 
 // Themes
 app.get('/create_themes', async (req, res) => {
@@ -119,7 +148,7 @@ app.get('/create_platforms', async (req, res) => {
 
         while (true) {
 
-            const response = await axios.post(`${base}/platforms`, `fields *; limit 500; offset ${offset};`,
+            const response = await axios.post(`${base}/platforms`, `fields *; where id = (6, 14, 34, 39, 48, 82, 130, 167, 169, 508); limit 500; offset ${offset};`,
                 {
                     headers: {
                         'Client-ID': clientId,
@@ -151,6 +180,50 @@ app.get('/create_platforms', async (req, res) => {
     } catch (error) {
         console.log(error)
     }
+})
+
+// Platforms logos
+app.get('/create_platforms_logos', async (req, res) => {
+
+    try {
+
+        let platforms = []
+        let offset = 0
+
+        while (true) {
+
+            const response = await axios.post(`${base}/platform_logos`, `fields *; where id = (670, 867, 831, 248, 231, 329, 825, 606, 892, 561, 896); limit 500; offset ${offset};`,
+                {
+                    headers: {
+                        'Client-ID': clientId,
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'text/plain'
+                    }
+                })
+
+            const platforms = response.data
+
+            for (const platform of platforms) {
+                const { id, animated, width, height, url } = platform
+                await pool.promise().query(
+                    'INSERT INTO platform_logos (id, animated, width, height, url) VALUES (?, ?, ?, ?, ?)',
+                    [id, animated, width, height, url]
+                )
+            }
+
+            if (platforms.length < 500) {
+                break
+            }
+
+            offset += 500
+        }
+
+        res.send('Platforms logos inserted successfully')
+
+    } catch (error) {
+        console.log(error)
+    }
+
 })
 
 
@@ -243,6 +316,50 @@ app.get('/create_company_logos', async (req, res) => {
     }
 })
 
+// Involved Companies
+app.get('/create_involved_companies', async (req, res) => {
+
+    try {
+
+        let companies = []
+        let offset = 0
+
+        while (true) {
+
+            const response = await axios.post(`${base}/involved_companies`, `fields *; limit 500; where game.platforms = (6, 14, 34, 39, 48, 82, 130, 167, 169, 508); offset ${offset};`,
+                {
+                    headers: {
+                        'Client-ID': clientId,
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'text/plain'
+                    }
+                })
+
+            const companies = response.data
+
+            for (const _company of companies) {
+                const { id, company, game, developer, publisher, supporting, created_at, updated_at } = _company
+                await pool.promise().query(
+                    'INSERT INTO involved_companies (id, company, game, developer, publisher, supporting, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                    [id, company, game, developer, publisher, supporting, UnixToDateTime(created_at), UnixToDateTime(updated_at)]
+                )
+            }
+
+            if (companies.length < 500) {
+                break
+            }
+
+            offset += 500
+        }
+
+        res.send('Involved Companies inserted successfully')
+
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
 
 // Covers
 app.get('/create_covers', async (req, res) => {
@@ -254,7 +371,7 @@ app.get('/create_covers', async (req, res) => {
 
         while (true) {
 
-            const response = await axios.post(`${base}/covers`, `fields *; limit 500; offset ${offset};`,
+            const response = await axios.post(`${base}/covers`, `fields *; limit 500; where game.platforms = (6, 14, 34, 39, 48, 82, 130, 167, 169, 508);  offset ${offset};`,
                 {
                     headers: {
                         'Client-ID': clientId,
@@ -298,7 +415,7 @@ app.get('/create_screenshots', async (req, res) => {
 
         while (true) {
 
-            const response = await axios.post(`${base}/screenshots`, `fields *; limit 500; offset ${offset};`,
+            const response = await axios.post(`${base}/screenshots`, `fields *; where game.platforms = (6, 14, 34, 39, 48, 82, 130, 167, 169, 508); limit 500; offset ${offset};`,
                 {
                     headers: {
                         'Client-ID': clientId,
@@ -343,7 +460,7 @@ app.get('/create_videos', async (req, res) => {
 
         while (true) {
 
-            const response = await axios.post(`${base}/game_videos`, `fields *; limit 500; offset ${offset};`,
+            const response = await axios.post(`${base}/game_videos`, `fields *; sort id asc; limit 500; where game.platforms = (6, 14, 34, 39, 48, 82, 130, 167, 169, 508) ; offset ${offset};`,
                 {
                     headers: {
                         'Client-ID': clientId,
@@ -388,7 +505,7 @@ app.get('/create_collections', async (req, res) => {
 
         while (true) {
 
-            const response = await axios.post(`${base}/collections`, `fields *; limit 500; offset ${offset};`,
+            const response = await axios.post(`${base}/collections`, `fields *; limit 500; where games.platforms = (6, 14, 34, 39, 48, 82, 130, 167, 169, 508); offset ${offset};`,
                 {
                     headers: {
                         'Client-ID': clientId,
@@ -434,7 +551,7 @@ app.get('/create_franchises', async (req, res) => {
 
         while (true) {
 
-            const response = await axios.post(`${base}/franchises`, `fields *; limit 500; offset ${offset};`,
+            const response = await axios.post(`${base}/franchises`, `fields *; limit 500; where games.platforms = (6, 14, 34, 39, 48, 82, 130, 167, 169, 508); offset ${offset};`,
                 {
                     headers: {
                         'Client-ID': clientId,
@@ -480,7 +597,7 @@ app.get('/create_games', async (req, res) => {
 
         while (true) {
 
-            const response = await axios.post(`${base}/games`, `fields *; limit 500; offset ${offset};`,
+            const response = await axios.post(`${base}/games`, `fields *; sort id asc; limit 500; where platforms = (6, 14, 34, 39, 48, 82, 130, 167, 169, 508) & id > 402008; offset ${offset};`,
                 {
                     headers: {
                         'Client-ID': clientId,
@@ -495,15 +612,15 @@ app.get('/create_games', async (req, res) => {
 
                 const {
                     id, name, parent_game, slug, cover, storyline, summary, hypes, first_release_date, rating, rating_count, total_rating, total_rating_count, url, created_at, updated_at,
-                    involved_companies, similar_games, platforms, genres, game_modes, themes, screenshots, videos, franchises, collections
+                    involved_companies, similar_games, platforms, player_perspectives, genres, game_modes, themes, screenshots, videos, franchises, collections
                 } = game
 
-                
+
                 // Needs to get the company id not the id of the object
                 if (involved_companies) {
                     for (const company of involved_companies) {
                         await pool.promise().query(
-                            'INSERT INTO involved_companies (id, company) VALUES (?, ?)',
+                            'INSERT INTO game_involved_companies (id, company) VALUES (?, ?)',
                             [id, company]
                         )
                     }
@@ -524,6 +641,15 @@ app.get('/create_games', async (req, res) => {
                         await pool.promise().query(
                             'INSERT INTO game_platforms (id, platform) VALUES (?, ?)',
                             [id, platform]
+                        )
+                    }
+                }
+
+                if (player_perspectives) {
+                    for (const perspective of player_perspectives) {
+                        await pool.promise().query(
+                            'INSERT INTO game_player_perspectives (id, perspective) VALUES (?, ?)',
+                            [id, perspective]
                         )
                     }
                 }
@@ -597,7 +723,7 @@ app.get('/create_games', async (req, res) => {
                     'INSERT INTO games (id, name, parent_game, slug, cover, storyline, summary, hypes, first_release_date, rating, rating_count, total_rating, total_rating_count, url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                     [id, name, parent_game, slug, cover, storyline, summary, hypes, releaseDate, rating, rating_count, total_rating, total_rating_count, url, UnixToDateTime(created_at), UnixToDateTime(updated_at)]
                 )
-                
+
             }
 
             if (games.length < 500) {

@@ -3,8 +3,6 @@ const { pool } = require('../scripts/db');
 
 const LIMIT = 20
 
-async function updateGames() { }
-
 
 async function setThemes() {
 
@@ -26,12 +24,11 @@ async function setThemes() {
                     LEFT JOIN game_genres gg ON g.id = gg.id
                     LEFT JOIN genres ge ON gg.genre = ge.id
                     WHERE 
-                        p.id IN (48, 167, 169, 6, 130, 508)
-                        AND g.first_release_date >= DATE_SUB(CURDATE(), INTERVAL 15 YEAR) 
+                        g.first_release_date >= DATE_SUB(CURDATE(), INTERVAL 15 YEAR) 
                         AND g.first_release_date < CURRENT_DATE() 
                         AND t.name = ?
                     GROUP BY g.id
-                    ORDER BY RAND()
+                    ORDER BY random_rank
                     LIMIT ?;
                 `
 
@@ -47,6 +44,7 @@ async function setThemes() {
         console.log("Failed to set themes", error)
     }
 }
+
 
 async function setNewReleases() {
 
@@ -67,11 +65,11 @@ async function setNewReleases() {
                 LEFT JOIN game_genres gg ON g.id = gg.id
                 LEFT JOIN genres ge ON gg.genre = ge.id
                 WHERE 
-                    p.id IN (48, 167, 169, 6, 130, 508)
-                    AND g.first_release_date >= DATE_SUB(CURDATE(), INTERVAL 15 YEAR) 
+                    g.first_release_date >= DATE_SUB(CURDATE(), INTERVAL 15 YEAR) 
                     AND g.first_release_date < CURRENT_DATE() 
+                    AND first_release_date IS NOT NULL
                 GROUP BY g.id
-                ORDER BY RAND()
+                ORDER BY first_release_date DESC
                 LIMIT ?;
             `
 
@@ -107,7 +105,7 @@ async function setRandomGames() {
                 LEFT JOIN genres ge ON gg.genre = ge.id
                 WHERE p.id IN (48, 167, 169, 6, 130, 508)
                 GROUP BY g.id
-                ORDER BY first_release_date DESC
+                ORDER BY RAND()
                 LIMIT ?;
             `
 
@@ -179,11 +177,9 @@ async function setOldGames() {
                 LEFT JOIN platforms p ON gp.platform = p.id
                 LEFT JOIN game_genres gg ON g.id = gg.id
                 LEFT JOIN genres ge ON gg.genre = ge.id
-                WHERE 
-                    p.id IN (48, 167, 169, 6, 130, 508)
-                    AND g.first_release_date <= DATE_SUB(CURDATE(), INTERVAL 15 YEAR) 
+                WHERE g.first_release_date <= DATE_SUB(CURDATE(), INTERVAL 15 YEAR) 
                 GROUP BY g.id
-                ORDER BY RAND()
+                ORDER BY random_rank
                 LIMIT ?;
             `
 

@@ -100,6 +100,14 @@
 --     updated_at DATETIME
 -- );
 
+CREATE TABLE platform_logos (
+    id INT PRIMARY KEY,
+    animated BOOLEAN,
+    width INT,
+    height INT,
+    url varchar(255),
+)
+
 CREATE TABLE games (
     id INT PRIMARY KEY,
     name varchar(255),
@@ -116,12 +124,24 @@ CREATE TABLE games (
     total_rating_count INT,
     url varchar(255),
     created_at DATETIME,
-    updated_at DATETIME
+    updated_at DATETIME,
+    random_rank INT
+);
+
+CREATE TABLE game_involved_companies (
+    id INT,
+    company INT
 );
 
 CREATE TABLE involved_companies (
     id INT,
-    company INT
+    company INT,
+    game INT,
+    developer BOOLEAN,
+    publisher BOOLEAN,
+    supporting BOOLEAN,
+    created_at DATETIME,
+    updated_at DATETIME
 );
 
 CREATE TABLE similar_games (
@@ -175,6 +195,21 @@ CREATE TABLE contact (
     email varchar(255),
     message TEXT
 )
+
+
+CREATE TABLE player_perspectives (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255),
+    slug varchar(255),
+    url varchar(255),
+    created_at DATETIME,
+    updated_at DATETIME
+)
+
+CREATE TABLE game_player_perspectives (
+    id INT,
+    perspective INT
+);
 
 
 DELETE FROM involved_companies;
