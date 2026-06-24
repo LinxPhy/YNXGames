@@ -8,7 +8,7 @@ async function setThemes() {
 
     try {
 
-        const themes = ['action', 'fantasy', 'mystery', 'open world']
+        const themes = ['action', 'fantasy', 'mystery', 'open world', 'romance', 'educational', 'science fiction', 'drama']
 
         for (const theme of themes) {
 
@@ -99,13 +99,10 @@ async function setRandomGames() {
                 LEFT JOIN game_themes gt ON g.id = gt.id
                 LEFT JOIN themes t ON gt.theme = t.id
                 LEFT JOIN covers c ON g.id = c.game
-                LEFT JOIN game_platforms gp ON g.id = gp.id
-                LEFT JOIN platforms p ON gp.platform = p.id
                 LEFT JOIN game_genres gg ON g.id = gg.id
                 LEFT JOIN genres ge ON gg.genre = ge.id
-                WHERE p.id IN (48, 167, 169, 6, 130, 508)
                 GROUP BY g.id
-                ORDER BY RAND()
+                ORDER BY g.random_rank
                 LIMIT ?;
             `
 

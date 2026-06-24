@@ -44,6 +44,14 @@ export default function HomePage({ games }: { games: any }) {
         { name: "old_games", h2: "Old Games", span: "Discover old gems" },
     ]
 
+    const evenMoreHeaderMessages = [
+        { name: "romance", h2: "Romance Games", span: "" },
+        { name: "educational", h2: "Educational Games", span: "" },
+        { name: "science_fiction", h2: "Science Fiction Games", span: "" },
+        { name: "drama", h2: "Drama Games", span: "" },
+    ]
+
+
 
     return (
         <div className={styles.content}>
@@ -52,6 +60,7 @@ export default function HomePage({ games }: { games: any }) {
             <OtherCategories data={otherCategories} />
             <GamesSections games={games} headerMessages={moreHeaderMessages} />
             <Banner />
+            <GamesSections games={games} headerMessages={evenMoreHeaderMessages} />
         </div>
     );
 }

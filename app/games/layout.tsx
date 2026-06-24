@@ -1,5 +1,6 @@
 import Sidebar from "./sidebar"
 import styles from './page.module.css'
+import { GamesContext } from "./gamesContext";
 
 export default async function GamesLayout({ children }: { children: React.ReactNode }) {
 
@@ -11,8 +12,10 @@ export default async function GamesLayout({ children }: { children: React.ReactN
 
     return (
         <div className={styles.container}>
-            <Sidebar options={data} />
-            <>{children}</>
+            <GamesContext options={data}>
+                <Sidebar />
+                <>{children}</>
+            </GamesContext>
         </div>
     )
 

@@ -101,7 +101,11 @@ app.get('/api/games', async (req, res) => {
             'new_releases',
             'random',
             'popular',
-            'old_games'
+            'old_games',
+            'romance',
+            'educational',
+            'science_fiction',
+            'drama'
         ];
 
         const values = await Promise.all(
@@ -453,49 +457,6 @@ app.get('/api/explore', async (req, res) => {
 
 })
 
-app.get('/api/games_options', async (req, res) => {
 
-    try {
-
-        const genres = `SELECT * FROM genres`
-        const themes = `SELECT * FROM themes`
-
-        const [
-            [genresData],
-            [themesData]
-        ] = await Promise.all([
-            pool.promise().query(genres),
-            pool.promise().query(themes)
-        ])
-
-        res.send({ genres: genresData, themes: themesData });
-
-    } catch (error) {
-        console.error('Error fetching games:', error);
-        res.status(500).send({ error: 'Failed to fetch games' });
-    }
-
-})
-
-app.get('/api/return_games/:search_query', async (req, res) => {
-
-    try {
-
-        // const { search_query } = req.params
-        // const page = parseInt(req.query.page)
-        // const limit = parseInt(req.query.limit)
-        // const offset = (page - 1) * limit
-
-        const { search_query } = req.params
-        const { type, page } = req.query
-        const limit = 20
-
-
-    } catch (error) {
-        console.error('Error fetching games:', error);
-        res.status(500).send({ error: 'Failed to fetch games' });
-    }
-
-})
 
 module.exports = app;

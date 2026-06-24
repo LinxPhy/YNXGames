@@ -30,9 +30,9 @@ export function ExploreContext({ children, min, max }: { children: React.ReactNo
         unknown_releases
     });
 
-    useEffect(() => {
-        console.log(filters)
-    }, [filters])
+    // useEffect(() => {
+    //     console.log(filters)
+    // }, [filters])
 
     return (
         <ExploreContextProvider.Provider value={{ filters, setFilters }} >

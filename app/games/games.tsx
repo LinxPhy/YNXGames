@@ -1,25 +1,35 @@
 'use client'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import DefaultOptions from './defaultOptions'
 import styles from './page.module.css'
+import { useSearchParams } from 'next/navigation'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { GamesContextProvider } from './gamesContext'
+
+const getGames = async (option: string, pageParam: number) => {
+    
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/return_games/${option}?` + 
+        new URLSearchParams({
+            page: pageParam.toString(),
+        })
+    );
+    return response.json();
+
+}
 
 export default function Games() {
 
-    const [open, setOpen] = useState("category")
+    const searchParams = useSearchParams()
+    
+    const option = searchParams.get('search_type')
+    const { genres, themes } : any = useContext(GamesContextProvider)
 
-    // random options
-    const randomOptions = [
-        { id: 10, option: "adventure", name: "Adventure" },
-        { id: 11, option: "horror", name: "Horror" },
-        { id: 12, option: "romance", name: "Romance" },
-        { id: 13, option: "shooting", name: "Shooting" },
-        { id: 14, option: "racing", name: "Racing" },
-        { id: 15, option: "survival", name: "Survival" },
-        { id: 16, option: "puzzle", name: "Puzzle" },
-        { id: 17, option: "arcade", name: "Arcade" },
-        { id: 18, option: "fighting", name: "Fighting" },
-    ]
+    // const { data, isLoading, isError } = useInfiniteQuery({
+    //     queryKey: ['games', option],
+    //     queryFn: ({ pageParam = 1 }) => getGames(option, pageParam),
 
+    //     refetchOnWindowFocus: false,
+    // })
 
     return (
         <div className={styles.games}>

@@ -11,7 +11,7 @@ interface HeaderMessage {
 
 export default function GamesSections({ games, headerMessages }: { games: any; headerMessages: HeaderMessage[] }) {
 
-    const { action, fantasy, mystery, open_world, new_releases, random, popular, old_games } = games
+    const { action, fantasy, mystery, open_world, new_releases, random, popular, old_games, romance, educational, science_fiction, drama } = games
 
     const gameSections: any = {
         popular,
@@ -22,6 +22,10 @@ export default function GamesSections({ games, headerMessages }: { games: any; h
         mystery,
         old_games,
         random,
+        romance,
+        educational,
+        science_fiction,
+        drama
     };
 
     return (

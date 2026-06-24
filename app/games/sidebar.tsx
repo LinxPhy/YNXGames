@@ -2,11 +2,15 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import DefaultOptions from './defaultOptions'
 import styles from './page.module.css'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import {  GamesContextProvider } from './gamesContext'
 
-export default function Sidebar({ options }: { options: any }) {
+export default function Sidebar() {
 
-    const { genres, themes } = options
+    // const { genres, themes } = options
+
+    const { genres, themes } : any = useContext(GamesContextProvider)
+
     const searchParams = useSearchParams();
     const router = useRouter();
     // const [open, setOpen] = useState("category")
