@@ -1,5 +1,6 @@
 const express = require('express');
 const { pool } = require('../scripts/db');
+const mysql = require('mysql2');
 const app = express();
 
 app.get('/api/games_options', async (req, res) => {
@@ -30,32 +31,28 @@ function getThemes() {
 
     let query =
         `
-        SELECT
-            g.*,
+        SELECT g.*,
+        (
+            SELECT c.url
+            FROM covers c
+            WHERE c.game = g.id
+            LIMIT 1
+        ) AS image,
 
-            (
-                SELECT c.url
-                FROM covers c
-                WHERE c.game = g.id
-                LIMIT 1
-            ) AS image,
-
-            (
-                SELECT ge.name
-                FROM game_genres gg
-                JOIN genres ge ON ge.id = gg.genre
-                WHERE gg.id = g.id
-                LIMIT 1
-            ) AS genre
-
-        FROM games g
-        WHERE EXISTS (
-            SELECT 1
+        (
+            SELECT ge.name
+            FROM game_genres gg
+            JOIN genres ge ON ge.id = gg.genre
+            WHERE gg.id = g.id
+            LIMIT 1
+        ) AS genre
+        FROM (
+            SELECT gt.id
             FROM game_themes gt
-            JOIN themes t ON t.id = gt.theme
-            WHERE gt.id = g.id
-            AND t.name = ?
-        )
+            JOIN themes t ON gt.theme = t.id
+            WHERE t.slug = ?
+        ) x
+        JOIN games g ON g.id = x.id
         ORDER BY g.random_rank
         LIMIT ? OFFSET ?
     `
@@ -70,24 +67,27 @@ function getGenres() {
         `
         SELECT
             g.*,
-
             (
                 SELECT c.url
                 FROM covers c
                 WHERE c.game = g.id
                 LIMIT 1
             ) AS image,
-
             (
                 SELECT ge.name
                 FROM game_genres gg
                 JOIN genres ge ON ge.id = gg.genre
                 WHERE gg.id = g.id
-                AND ge.name = ?
                 LIMIT 1
             ) AS genre
-
         FROM games g
+        WHERE EXISTS (
+            SELECT 1
+            FROM game_genres gg
+            JOIN genres ge ON ge.id = gg.genre
+            WHERE gg.id = g.id
+            AND ge.slug = ?
+        )
         ORDER BY g.random_rank
         LIMIT ? OFFSET ?
     `
@@ -236,7 +236,7 @@ app.get('/api/return_games/:search_type', async (req, res) => {
 
         // if (!type || !page) return res.status(400).send({ error: 'Missing required parameters' });
 
-        const limit = 20
+        const limit = 25
         const fetchSize = limit + 1
         const offset = (page - 1) * limit;
 
@@ -251,15 +251,22 @@ app.get('/api/return_games/:search_type', async (req, res) => {
         else if (type === 'genre') query = getGenres()
 
         let response = ''
+        // console.log(query)
 
         if (type === 'theme' || type === 'genre') {
-            [response] = await pool.promise().query(query, [type, fetchSize, offset]);
+            [response] = await pool.promise().query(query, [search_type, fetchSize, offset]);
         } else {
             [response] = await pool.promise().query(query, [fetchSize, offset]);
         }
 
         const games = response.slice(0, limit);
         const hasMore = response.length > limit;
+
+        games.forEach((game) => {
+            game.image = game.image
+                ? `https:${game.image.replace('t_thumb', 't_1080p')}`
+                : game.image
+        });
 
         res.json({ games, hasMore, nextPage: parseInt(page) + 1 });
 
