@@ -36,10 +36,12 @@ export default function GamesSections({ games, headerMessages }: { games: any; h
 
                 return (
                     <section key={section.name} className={styles.games}>
-                        <div className={styles.gamesHeader}>
-                            <h2>{section.h2}</h2>
-                            <button>▶</button>
-                        </div>
+                        <Link href={`/games/?search_type=${section.name}`}>
+                            <div className={styles.gamesHeader}>
+                                <h2>{section.h2}</h2>
+                                <button>▶</button>
+                            </div>
+                        </Link>
 
                         <Carousel>
                             <div className={styles.game}>

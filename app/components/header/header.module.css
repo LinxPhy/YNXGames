@@ -72,6 +72,10 @@
     justify-content: center;
 }
 
+.search:focus {
+    outline: 2px solid var(--primary);
+}
+
 .header nav button{
     background-color: var(--primary);
     color: var(--white);
@@ -98,7 +102,7 @@
     border: 1px solid var(--dark);
     border-radius: 0.5rem;
     background-color: var(--dark);
-    color: var(--light);
+    color: var(--white);
     font-size: 1rem;
 }
 

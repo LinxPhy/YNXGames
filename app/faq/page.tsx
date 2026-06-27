@@ -5,7 +5,7 @@ export default function FAQ() {
 
     return (
         <div className={styles.faq}>
-            <h1>FAQ</h1>
+            {/* <h1>FAQ</h1> */}
             <div className={styles.content}>
                 <div className={styles.section}>
                     <h3>What is YNXGames about?</h3>

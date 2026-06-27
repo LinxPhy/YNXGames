@@ -17,7 +17,7 @@ export default function Categories({ data }: { data: any }) {
             <Carousel>
                 <div className={styles.categories} >
                     {data.map((image: any) => (
-                        <Link href={`/games/${image.slug}`}
+                        <Link href={`/games/?search_type=${image.slug}`}
                             className={styles.category}
                             key={image.id}
                         >

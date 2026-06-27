@@ -95,7 +95,7 @@ export default function Search() {
                     <div className={styles.searchResults}>
                         {games.map((game: any) => (
                             <Link href={`/game/${game.slug}`} key={game.id} onClick={() => setShowResults(false)}>
-                                <Image src={game.url} width={60} height={60} alt={game.name} />
+                                <Image src={game?.url} width={60} height={60} alt={game.name} />
                                 <div>
                                     <p>{game.name}</p>
                                     <span>{game.platforms}</span>
