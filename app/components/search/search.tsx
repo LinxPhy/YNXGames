@@ -8,8 +8,8 @@ import { useRouter } from "next/navigation";
 
 const fetchGames = async (query: string) => {
     const page = 1
-    const limit = 6
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/search/${query}?` + 
+    const limit = 5
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/search/${query}?` +
         new URLSearchParams({
             page: page.toString(),
             limit: limit.toString(),
@@ -58,7 +58,7 @@ export default function Search() {
 
     return (
         <div className={styles.searchContainer}>
-            <div className={styles.searchWrapper} ref={wrapperRef}>
+            <div className={styles.searchWrapper} ref={wrapperRef} >
                 <input
                     type="search"
                     value={inputValue}
@@ -68,11 +68,17 @@ export default function Search() {
                     }}
                     onFocus={() => setShowResults(true)}
                     placeholder="Search for games in our database"
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            router.push(`/search?query=${encodeURIComponent(debouncedQuery)}`);
+                            setShowResults(false);
+                        }
+                    }}
                     className={styles.search}
                 />
-                <button 
+                <button
                     className={styles.searchButton}
-                    onClick={() => router.push(`/search/${debouncedQuery}`)}
+                    onClick={() => router.push(`/search?query=${debouncedQuery}`)}
                 >
                     Search
                 </button>
@@ -104,13 +110,14 @@ export default function Search() {
                         ))}
 
                         {hasMore && (
-                            <Link href={`/search/${debouncedQuery}`} className={styles.viewMore}>
+                            <Link href={`/search?query=${debouncedQuery}`} className={styles.viewMore}>
                                 <p>View More Results</p>
                             </Link>
                         )}
                     </div>
                 )}
             </div>
+
         </div>
     )
 

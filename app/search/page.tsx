@@ -7,13 +7,18 @@ import Image from "next/image";
 import Link from "next/link";
 
 const fetchGames = async (query: string, page: number) => {
-    const limit = 12
+
+    const limit = 10
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/search/${query}?` +
         new URLSearchParams({
             page: page.toString(),
             limit: limit.toString(),
         })
     );
+
+    // add delay
+    // await new Promise((resolve) => setTimeout(resolve, 100000));
 
     return response.json();
 }
@@ -58,7 +63,7 @@ export default function Search() {
         initialPageParam: 1,
         refetchOnWindowFocus: false,
         enabled: debouncedQuery.length > 0,
-        placeholderData: (prev) => prev,
+        // placeholderData: (prev) => prev,
     })
 
     const games = data?.pages.flatMap((page: any) => page.data)
@@ -83,10 +88,14 @@ export default function Search() {
                         <div className={styles.searchResults}>
                             {games.map((game: any) => (
                                 <Link href={`/game/${game.slug}`} key={game.id}>
-                                    <Image src={game.url} width={120} height={120} alt={game.name} />
+                                    <Image src={game.url} width={200} height={200} alt={game.name} />
                                     <div>
-                                        <p>{game.name}</p>
-                                        <span>{game.platforms}</span>
+                                        <div>
+                                            <h4>{game.name}</h4>
+                                            <span>{game.platforms}</span>
+                                        </div>
+                                        <p>{game.storyline || game.summary}</p>
+
                                     </div>
                                 </Link>
                             ))}
@@ -109,8 +118,14 @@ export default function Search() {
                 </div>
             </div>
 
-            {isPending && (
-                <p>Searching...</p>
+            {isFetching && (
+                <div className={styles.searchResults}>
+                    <div className={styles.gameSkeletonResults}>
+                        {Array.from({ length: 5 }).map((_, index) => (
+                            <div key={index} className={`${styles.skeleton}`}></div>
+                        ))}
+                    </div>
+                </div>
             )}
 
             {isError && (

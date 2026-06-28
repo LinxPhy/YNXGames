@@ -264,7 +264,7 @@ app.get('/api/search/:search_query', async (req, res) => {
         const offset = (page - 1) * limit
 
         const query = `
-            SELECT g.id, g.name, g.slug, c.url, GROUP_CONCAT(DISTINCT p.name ORDER BY p.name SEPARATOR ', ') AS platforms FROM games g 
+            SELECT g.id, g.name, g.summary, g.storyline, g.slug, c.url, GROUP_CONCAT(DISTINCT p.name ORDER BY p.name SEPARATOR ', ') AS platforms FROM games g 
             LEFT JOIN covers c ON g.id = c.game 
             LEFT JOIN game_platforms gp ON g.id = gp.id
             LEFT JOIN platforms p ON gp.platform = p.id
@@ -278,7 +278,7 @@ app.get('/api/search/:search_query', async (req, res) => {
             ...game,
 
             url: game.url
-                ? `https:${game.url}`
+                ? `https:${game.url.replace('t_thumb', 't_1080p')}`
                 : game.url
         }))
 

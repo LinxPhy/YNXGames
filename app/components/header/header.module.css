@@ -1,6 +1,4 @@
-
-
-.header{
+.header {
     width: 100%;
     height: 80px;
 
@@ -13,7 +11,7 @@
     gap: 2rem;
 }
 
-.header nav{
+.header nav {
     display: flex;
     align-items: center;
     gap: 2rem;
@@ -21,7 +19,7 @@
     height: 100%;
 }
 
-.header nav a{
+.header nav a {
     font-weight: 500;
     font-size: 1.1rem;
     height: 100%;
@@ -31,41 +29,42 @@
     border-bottom: 4px solid transparent;
 }
 
-.header nav a:hover{
+.header nav a:hover {
     color: var(--primary);
 }
 
-.header nav .active{
+.header nav .active {
     color: var(--primary);
     border-bottom: 4px solid var(--primary);
+    font-weight: 500;
 }
 
-.header nav .active button{
+.header nav .active button {
     background-color: var(--white);
     color: var(--primary);
 }
 
-.title{
+.title {
     display: flex;
     align-items: center;
     flex-shrink: 0;
     gap: 0.5rem;
 }
 
-.title h1 a{
+.title h1 a {
     color: var(--white);
     font-size: 1.5rem;
     font-weight: 700;
     display: flex;
 }
 
-.title h1 a span{
+.title h1 a span {
     color: var(--primary);
     font-size: 1.5rem;
     font-weight: 700;
 }
 
-.searchContainer{
+.searchContainer {
     flex: 1;
     display: flex;
     align-items: center;
@@ -76,7 +75,7 @@
     outline: 2px solid var(--primary);
 }
 
-.header nav button{
+.header nav button {
     background-color: var(--primary);
     color: var(--white);
     border: 3px solid var(--primary);
@@ -85,18 +84,22 @@
     font-weight: 600;
 }
 
-.header nav button:hover{
+.header nav button:hover {
     background-color: var(--white);
     color: var(--primary);
 }
 
-.searchWrapper{
+.searchWrapper {
     position: relative;
-    max-width: 400px;  
-    width: 100%;  
+    max-width: 400px;
+    width: 100%;
 }
 
-.search{
+.searchIcon {
+    display: none
+}
+
+.search {
     width: 100%;
     padding: 1rem 5.5rem 1rem 0.8rem;
     border: 1px solid var(--dark);
@@ -106,7 +109,7 @@
     font-size: 1rem;
 }
 
-.searchButton{
+.searchButton {
     position: absolute;
     right: 10px;
     top: 50%;
@@ -121,24 +124,24 @@
     font-weight: 600;
 }
 
-.searchButton:hover{
+.searchButton:hover {
     background-color: var(--white);
     color: var(--primary);
 }
 
-.searchResults{
+.searchResults {
     position: absolute;
     z-index: 20;
 }
 
-.searchResults img{
+.searchResults img {
     width: 50px;
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
 }
 
-.searchResults a{
+.searchResults a {
     background-color: var(--dark);
     width: 100%;
     max-width: 400px;
@@ -151,7 +154,7 @@
     top: -3px;
 }
 
-.loading{
+.loading {
     background-color: var(--dark);
     width: max(100%, 400px);
     max-width: 400px;
@@ -165,26 +168,95 @@
     border-bottom: 1px solid var(--background);
 }
 
-.searchResults a:last-child{
+.searchResults a:last-child {
     border-bottom: none;
 }
 
-.searchResults a:hover{
+.searchResults a:hover {
     background-color: var(--background);
 }
 
-.viewMore{
+.viewMore {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     background-color: var(--light);
 }
 
-.viewMore p{
+.viewMore p {
     text-align: right;
     color: var(--primary);
     font-weight: 500;
     font-size: 0.9rem;
     cursor: pointer;
-    
+
+}
+
+.header nav .mobile {
+    display: none;
+}
+
+.mobile_active a {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.mobileHeader {
+    display: none;
+}
+
+.mobileOptions {
+    display: none;
+}
+
+
+@media screen and (max-width: 1200px) {
+
+    .header {
+        justify-content: space-between;
+    }
+
+    .searchContainer {
+        display: none;
+    }
+
+    .header nav .mobile {
+        display: flex;
+    }
+
+}
+
+
+@media screen and (max-width: 860px) {
+
+    .header nav {
+        display: none;
+    }
+
+    .mobileHeader {
+        display: flex;
+        height: 100%;
+        align-items: center;
+    }
+
+    .mobileHeader img {
+        cursor: pointer;
+    }
+
+    .mobileOptions{
+        display: block;
+    }
+
+    .mobileOptions ul li a {
+        display: block;
+        width: 100%;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid var(--dark);
+    }
+
+    .mobileOptions ul li:not(.mobile_active) a:hover {
+        background-color: var(--dark);
+    }
+
+
 }
