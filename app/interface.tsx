@@ -71,6 +71,7 @@ interface Video {
     game: number;
     name: string;
     url: string;
+    video_id: string;
 }
 
 interface Theme {

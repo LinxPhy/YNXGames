@@ -76,3 +76,17 @@
     font-size: 1.2rem;
 }
 
+.releaseDate{
+    display: flex;
+    justify-content: space-between;
+}
+
+.releaseDate > div{
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.releaseDate p{
+    font-size: 0.8rem;
+}

@@ -29,6 +29,7 @@
     --grad-1: #1b1b1fe6;
     --grad-2: #27272ce6;
     --grad-3: #00000000;
+    --overlay: #000000b3;
 }
 
 /* html {
@@ -145,3 +146,7 @@ main {
     flex-direction: column;
     width: 100vw;
 } */
+
+.CircularProgressbar-text{
+    font-weight: 800;
+}

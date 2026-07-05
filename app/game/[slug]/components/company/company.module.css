@@ -1,0 +1,44 @@
+.company {
+    background-color: var(--dark);
+    border-radius: .5rem;
+    margin-top: 2rem;
+    padding: 2rem;
+}
+
+.company h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.companySection {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.companySection h4 {
+    color: var(--white);
+    font-weight: 500;
+    margin-bottom: .5rem;
+}
+
+.companySection p {
+    color: var(--light);
+}
+
+.companySection > div{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1rem;
+    flex: 1;
+}
+
+.companySection > div:not(:last-child) {
+    border-right: 1px solid var(--grey);
+    padding-right: 1rem;
+}
+
+.companyInfo{
+    display: flex;
+    flex-direction: column;
+}

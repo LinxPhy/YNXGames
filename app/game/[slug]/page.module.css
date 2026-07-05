@@ -5,4 +5,31 @@
     width: 100%;
     margin: 0 auto;
     padding: 1rem;
+    position: relative;
+}
+
+.gamePage{
+    margin: 0 auto;
+}
+
+.coverImage{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.2;
+    filter: blur(15px);
+}
+
+.detailsSection{
+    display: flex;
+    gap: 1rem;
+}
+
+.detailsSection > div{
+    flex-basis: calc(50% - 0.5rem);
+    padding: 1rem;
 }

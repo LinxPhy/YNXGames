@@ -40,9 +40,15 @@ export default function Hero({ data }: { data: any }) {
                     </div>
                 </div>
 
-                {/* release date */}
-                <div>
-                    <span>Release Date: {formatDateTime(game?.first_release_date) || "Unknown"}</span>
+                <div className={styles.releaseDate}>
+                    <div>
+                        <span>Release Date:</span>
+                        <p>{formatDateTime(game?.first_release_date) || "Unknown"}</p>
+                    </div>
+                    <div>
+                        <span>Last Updated:</span>
+                        <p>{formatDateTime(game?.updated_at) || "Unknown"}</p>
+                    </div>
                 </div>
 
             </div>

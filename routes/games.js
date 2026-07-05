@@ -186,9 +186,19 @@ app.get('/api/game/:slug', async (req, res) => {
 
             franchises: `SELECT * FROM franchises f
                     LEFT JOIN game_franchises gf ON f.id = gf.franchise
-                    WHERE gf.id = ?;`
+                    WHERE gf.id = ?;`,
 
+            player_perspectives: `SELECT pp.id, pp.name FROM games g
+                    LEFT JOIN game_player_perspectives gpp ON g.id = gpp.id
+                    LEFT JOIN player_perspectives pp ON gpp.perspective = pp.id
+                    WHERE g.id = ?;`,
+
+            companies: `SELECT c.name, c.slug, ic.developer, ic.publisher, ic.supporting FROM games g
+                    LEFT JOIN involved_companies ic ON g.id = ic.game
+                    LEFT JOIN companies c ON ic.company = c.id
+                    WHERE g.id = ?;`
         }
+
 
         const formatItems = (game) => ({
             ...game,

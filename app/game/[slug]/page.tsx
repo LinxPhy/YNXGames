@@ -16,7 +16,6 @@ export default async function GamePage({ params }: { params: { slug: string } })
 
     const game = await response.json();
     // console.log(game);
-
     return <Game game={game} />;
 
 }
