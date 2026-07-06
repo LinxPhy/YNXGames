@@ -23,7 +23,7 @@ export default function Game({ game }: { game: GameProps }) {
 
     return (
         <div className={styles.gamePage}>
-            <Image src={covers?.[0]?.url} width={500} height={500} className={styles.coverImage} alt={''} />
+            {/* <Image src={covers?.[0]?.url} width={500} height={500} className={styles.coverImage} alt={''} /> */}
             <div className={styles.content}>
                 <Hero data={hero} />
                 <Navigation />

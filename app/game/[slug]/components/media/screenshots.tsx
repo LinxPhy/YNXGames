@@ -13,7 +13,7 @@ export default function Screenshots({ data }: { data: any }) {
 
     return (
         <>
-            <div className={styles.media}>
+            <div className={styles.media} id="screenshots">
                 <h3>Screenshots</h3>
                 <Carousel>
                     <div className={styles.mediaItems}>
@@ -33,6 +33,7 @@ export default function Screenshots({ data }: { data: any }) {
                             </div>
                         ))}
                     </div>
+                    {screenshots && screenshots?.length === 0 && <p>No screenshots available.</p>}
                 </Carousel>
             </div>
             {modal && <Modal data={screenshots} media={selectedMedia} type="screenshot" modal={modal} setModal={setModal} />}

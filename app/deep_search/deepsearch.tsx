@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { ClipLoader, SyncLoader } from "react-spinners";
 import Image from 'next/image';
 import styles from './page.module.css'
 
@@ -28,10 +29,10 @@ const fetchGames = async ({ values, page, prevGames }: { values: any, page: numb
 
 function MatchingRatingColor(rating: number) {
     if (!rating) return `${styles['nothing']}`
-    if (rating < 30 ) return `${styles['red']}`
-    if (rating < 50 ) return `${styles['orange']}`
-    if (rating < 70 ) return `${styles['yellow']}`
-    if (rating < 90 ) return `${styles['light-green']}`
+    if (rating < 30) return `${styles['red']}`
+    if (rating < 50) return `${styles['orange']}`
+    if (rating < 70) return `${styles['yellow']}`
+    if (rating < 90) return `${styles['light-green']}`
     return `${styles['green']}`
 }
 
@@ -202,7 +203,13 @@ export default function DeepSearch({ data }: { data: any }) {
 
                 <div className={styles.matches}>
 
-                    {isLoading && <p>Loading...</p>}
+                    {isLoading && (
+                        <>
+                            <SyncLoader color="#ffffff" size={20} loading={true} />
+                            <p>Loading, this could take a few minutes</p>
+                        </>
+                    )}
+
                     {error && <p> No matches found</p>}
 
                     {results && results.map((game: any, index: number) => (
@@ -221,7 +228,7 @@ export default function DeepSearch({ data }: { data: any }) {
                                 </div>
 
                                 <p className={styles.description}>{game.description}</p>
-                                
+
                                 <div className={styles.game_platforms}>
                                     {game.platforms && game.platforms.map((platform: any, index: number) => (
                                         <p key={index} className={styles.game_platform}>{platform}</p>

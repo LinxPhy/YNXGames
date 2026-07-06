@@ -21,7 +21,7 @@ export default function Videos({ data }: { data: any }) {
 
     return (
         <>
-            <div className={styles.media}>
+            <div className={styles.media} id="videos">
                 <h3>Videos</h3>
                 <Carousel>
                     <div className={styles.mediaItems}>
@@ -40,20 +40,15 @@ export default function Videos({ data }: { data: any }) {
                                 />
                             </div>
                         ))}
+
+                        {videos && videos?.length === 0 && (
+                            <p>No videos available.</p>
+                        )}
                     </div>
                 </Carousel>
+
             </div>
             {modal && <Modal data={videos} media={selectedMedia} type="video" modal={modal} setModal={setModal} />}
         </>
     )
 }
-//  {playing === video.video_id ? (
-//                             <iframe
-//                                 src={video.video_id}
-//                                 frameBorder="0"
-//                                 allow="autoplay; encrypted-media"
-//                                 allowFullScreen
-//                             ></iframe>
-//                         ) : (
-//                             <Image src={`https://img.youtube.com/vi/${getYoutubeID(video.video_id)}/hqdefault.jpg`} onClick={() => setPlaying(video.video_id)} width={300} height={300} alt="Screenshot" className={styles.screenshot} />
-//                         )}

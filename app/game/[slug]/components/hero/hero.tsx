@@ -9,7 +9,7 @@ export default function Hero({ data }: { data: any }) {
     const game = play
 
     return (
-        <div className={styles.hero}>
+        <div className={styles.hero} id="top">
             <Image src={cover.url} width={cover.width} height={cover.height} alt="Game Cover" className={styles.cover} />
 
             <div className={styles.info}>

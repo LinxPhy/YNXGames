@@ -8,7 +8,7 @@ export default function Details({ data }: { data: any }) {
     const { themes, genres, platforms, companies, modes, franchises, collections, play, player_perspectives } = data
 
     return (
-        <div className={styles.details}>
+        <div className={styles.details} id="details">
             <h3>Details</h3>
 
             <div className={styles.detailSection}>

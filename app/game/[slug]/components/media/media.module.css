@@ -46,6 +46,7 @@
     gap: 2rem;
     margin-top: 2rem;
     padding: 2rem;
+    scroll-margin-top: 150px;
 }
 
 .overlay {

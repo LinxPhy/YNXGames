@@ -8,6 +8,7 @@
     justify-content: space-evenly;
     gap: 2rem;
     margin-top: 2rem;
+    scroll-margin-top: 150px;
 }
 
 .ratings h3{

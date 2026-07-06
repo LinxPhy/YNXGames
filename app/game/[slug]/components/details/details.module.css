@@ -3,6 +3,7 @@
     padding: 2rem;
     background-color: var(--dark);
     border-radius: 0.5rem;
+    scroll-margin-top: 150px;
 }
 
 .details h3 {

@@ -7,7 +7,7 @@ export default function Recommendations({ data }: { data: any }) {
     const { similar_games } = data
 
     return (
-        <div className={styles.recommendations}>
+        <div className={styles.recommendations} id="recommendations">
             <h3>Similar Games</h3>
 
             <div className={styles.recommendationSection}>

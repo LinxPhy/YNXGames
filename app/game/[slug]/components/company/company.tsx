@@ -9,7 +9,7 @@ export default function Company({ data }: { data: any }) {
     const supporting = companies?.filter((c: any) => c.supporting);
 
     return (
-        <div className={styles.company}>
+        <div className={styles.company} id="developers">
             {/* <h3>Company</h3> */}
 
             <div className={styles.companySection}>
@@ -21,6 +21,7 @@ export default function Company({ data }: { data: any }) {
                         {developers?.map((company: any) => (
                             <p key={company.slug}>{company.name}</p>
                         ))}
+                        {developers?.length === 0 && <p>-</p>}
                     </div>
                 </div>
 
@@ -31,6 +32,7 @@ export default function Company({ data }: { data: any }) {
                         {supporting?.map((company: any) => (
                             <p key={company.slug}>{company.name}</p>
                         ))}
+                        {supporting?.length === 0 && <p>-</p>}
                     </div>
                 </div>
 
@@ -41,6 +43,7 @@ export default function Company({ data }: { data: any }) {
                         {publishers?.map((company: any) => (
                             <p key={company.slug}>{company.name}</p>
                         ))}
+                        {publishers?.length === 0 && <p>-</p>}
                     </div>
                 </div>
 

@@ -29,6 +29,7 @@
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
+    flex-grow: 1;
 }
 
 .options button:hover {
@@ -176,4 +177,12 @@
 
 .rating{
     display: flex;
+}
+
+@media screen and (max-width: 768px) {
+
+    .container {
+        padding: 0 1rem;
+    }
+
 }

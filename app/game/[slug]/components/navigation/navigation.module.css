@@ -3,23 +3,39 @@
     display: flex;
     gap: 1rem;
     margin-top: 2rem;
-    background-color: var(--background);
+    background-color: var(--dark);
     position: sticky;
-    top: 0;
+    top: 80px;
+    z-index: 999;
 }
 
 .navigation ul{
     display: flex;
-    gap: 1rem;
+    /* gap: 1rem; */
     width: 100%;
-    border-bottom: 1px solid var(--dark);
+    border-bottom: 1px solid var(--background);
 }
 
 .navigation li{
-    padding: 1rem 1rem;
+    display: flex;
+    border-bottom: 4px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.navigation li.active{
+    border-bottom-color: var(--primary);
+}
+
+.navigation li a {
+  
+    padding: 1rem 2rem;
     color: var(--white);
     font-weight: 500;
     cursor: pointer;
+}
+
+.navigation li:not(:last-child){
+    /* border-right: 1px solid var(--grey); */
 }
 
 .navigation li:hover{

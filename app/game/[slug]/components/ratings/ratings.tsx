@@ -26,7 +26,7 @@ export default function Ratings({ data }: { data: any }) {
     const totalPercentage = play.total_rating ? Math.round(play.total_rating * 20) : 0
 
     return (
-        <div className={styles.ratings}>
+        <div className={styles.ratings} id="ratings">
 
             <div className={styles.ratingSection}>
                 <h3>IGDB Rating</h3>
@@ -34,7 +34,7 @@ export default function Ratings({ data }: { data: any }) {
                 <div className={styles.progressBar}>
                     <CircularProgressbar
                         value={percentage}
-                        text={`${play.rating} `}
+                        text={`${play.rating || ''} `}
                         strokeWidth={12}
                         styles={buildStyles({
                             pathColor: ProgressBarColor(percentage),
@@ -49,13 +49,13 @@ export default function Ratings({ data }: { data: any }) {
                 <div className={styles.items}>
                     <div className={styles.item}>
                         <Image src="/icons/user.png" width={24} height={24} alt="IGDB User Rating" />
-                        <p>{play.rating}</p>
+                        <p>{play.rating || 'N/A'}</p>
                         <h4>User Rating</h4>
                     </div>
 
                     <div className={styles.item}>
                         <Image src="/icons/count.png" width={24} height={24} alt="IGDB User Rating Count" />
-                        <p>{play.rating_count}</p>
+                        <p>{play.rating_count || 'N/A'}</p>
                         <h4>User Rating Count</h4>
                     </div>
 
@@ -75,7 +75,7 @@ export default function Ratings({ data }: { data: any }) {
                 <div className={styles.progressBar}>
                     <CircularProgressbar
                         value={totalPercentage}
-                        text={`${play.total_rating} `}
+                        text={`${play.total_rating || ''} `}
                         strokeWidth={12}
                         styles={buildStyles({
                             pathColor: ProgressBarColor(totalPercentage),
@@ -90,13 +90,13 @@ export default function Ratings({ data }: { data: any }) {
                 <div className={styles.items}>
                     <div className={styles.item}>
                         <Image src="/icons/user.png" width={24} height={24} alt="IGDB User Rating" />
-                        <p>{play.total_rating}</p>
+                        <p>{play.total_rating || 'N/A'}</p>
                         <h4>Critics Rating</h4>
                     </div>
 
                     <div className={styles.item}>
                         <Image src="/icons/count.png" width={24} height={24} alt="IGDB User Rating Count" />
-                        <p>{play.total_rating_count}</p>
+                        <p>{play.total_rating_count || 'N/A'}</p>
                         <h4>Critics Rating Count</h4>
                     </div>
 

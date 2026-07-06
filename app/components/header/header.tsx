@@ -33,6 +33,19 @@ export default function Header() {
         };
     }, []);
 
+    useEffect(() => {
+        if (open) {
+            const prev = document.body.style.overflowY;
+            document.body.style.overflowY = 'hidden';
+
+            return () => {
+                document.body.style.overflowY = prev;
+            };
+        }
+    }, [open]);
+
+    // no scroll and overlay
+
     return (
         <>
             <header className={styles.header}>
@@ -64,16 +77,19 @@ export default function Header() {
             </header>
 
             {open && (
-                <div className={styles.mobileOptions} ref={menuRef}>
-                    <ul>
-                        <li className={pathname === '/search' ? styles.mobile_active : ''} ><Link href="/search" onClick={() => setOpen(false)}>Search</Link></li>
-                        <li className={pathname === '/' ? styles.mobile_active : ''}><Link href="/" onClick={() => setOpen(false)}>Home</Link></li>
-                        <li className={pathname === '/games' ? styles.mobile_active : ''}><Link href="/games" onClick={() => setOpen(false)}>Games</Link></li>
-                        <li className={pathname === '/explore' ? styles.mobile_active : ''}><Link href="/explore" onClick={() => setOpen(false)}>Explore</Link></li>
-                        <li className={pathname === '/faq' ? styles.mobile_active : ''}><Link href="/faq" onClick={() => setOpen(false)}>FAQ</Link></li>
-                        <li className={pathname === '/deep_search' ? styles.mobile_active : ''}><Link href="/deep_search" onClick={() => setOpen(false)}>Deep Search</Link></li>
-                    </ul>
-                </div>
+                <>
+                    <div className={styles.mobileOptions} ref={menuRef}>
+                        <ul>
+                            <li className={pathname === '/search' ? styles.mobile_active : ''} ><Link href="/search" onClick={() => setOpen(false)}>Search</Link></li>
+                            <li className={pathname === '/' ? styles.mobile_active : ''}><Link href="/" onClick={() => setOpen(false)}>Home</Link></li>
+                            <li className={pathname === '/games' ? styles.mobile_active : ''}><Link href="/games" onClick={() => setOpen(false)}>Games</Link></li>
+                            <li className={pathname === '/explore' ? styles.mobile_active : ''}><Link href="/explore" onClick={() => setOpen(false)}>Explore</Link></li>
+                            <li className={pathname === '/faq' ? styles.mobile_active : ''}><Link href="/faq" onClick={() => setOpen(false)}>FAQ</Link></li>
+                            <li className={pathname === '/deep_search' ? styles.mobile_active : ''}><Link href="/deep_search" onClick={() => setOpen(false)}>Deep Search</Link></li>
+                        </ul>
+                    </div>
+                    <div className={styles.overlay} onClick={() => setOpen(false)}></div>
+                </>
             )}
 
         </>

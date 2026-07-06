@@ -53,6 +53,8 @@ export default function GamesSections({ games, headerMessages }: { games: any; h
                                             alt={game.name || "Game Image"}
                                             width={game.width || 600}
                                             height={game.height || 900}
+                                            placeholder="blur"
+                                            blurDataURL="/images/placeholder.png"
                                         />
 
                                         <div className={styles.gameInfo}>

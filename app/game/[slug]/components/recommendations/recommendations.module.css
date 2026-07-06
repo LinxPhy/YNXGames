@@ -3,6 +3,7 @@
 .recommendations{
     margin-top: 2rem;
     padding: 2rem 0;
+    scroll-margin-top: 150px;
 }
 
 .recommendations h3{
