@@ -6,9 +6,11 @@ export default function Navigation() {
         <div className={styles.navigation}>
             <ul >
                 <li>Overview</li>
+                <li>Screenshots</li>
                 <li>Details</li>
                 <li>Ratings</li>
-                <li>Websites</li>
+                <li>Developers</li>
+                <li>Videos</li>
                 <li>Recommendations</li>
             </ul>
         </div>

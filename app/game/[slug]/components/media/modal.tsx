@@ -3,7 +3,7 @@ import styles from './media.module.css'
 import { useEffect } from 'react';
 import Carousel from '@/app/components/carousel/carousel';
 
-export default function Modal({ data, media, modal, setModal }: { data: any; media: any; modal: boolean; setModal: (modal: boolean) => void }) {
+export default function Modal({ data, media, type, modal, setModal }: { data: any; media: any; type: string; modal: boolean; setModal: (modal: boolean) => void }) {
 
     const orderedMedia = [
         ...data.slice(media),
@@ -40,14 +40,29 @@ export default function Modal({ data, media, modal, setModal }: { data: any; med
             <div className={styles.modal}>
                 <Carousel>
                     <div className={styles.modalItems}>
-                        {orderedMedia && orderedMedia.map((media: any) => (
-                            <div key={media.id} className={styles.modalContent}>
-                                <Image
-                                    src={media.url}
-                                    width={media.width || 300}
-                                    height={media.height || 300}
-                                    alt="media"
-                                />
+                        {orderedMedia && orderedMedia.map((media: any, index: number) => (
+                            <div key={index} className={styles.modalContent}>
+                                {type === 'screenshot' ? (
+
+                                    <Image
+                                        src={media.url}
+                                        width={media.width || 300}
+                                        height={media.height || 300}
+                                        alt="media"
+                                    />
+
+
+                                ) : (
+
+                                    <iframe
+                                        src={media.video_id}
+                                        frameBorder="0"
+                                        allow="autoplay; encrypted-media"
+                                        allowFullScreen
+                                        // onLoad={() => {}} add an onLoad event handler if needed
+                                    ></iframe>
+
+                                )}
                             </div>
                         ))}
                     </div>

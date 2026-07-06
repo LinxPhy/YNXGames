@@ -12,28 +12,28 @@ import Videos from './components/media/videos'
 
 export default function Game({ game }: { game: GameProps }) {
 
-    const { themes, covers, genres, platforms, companies, modes, similar_games, videos, screenshots, franchises, collections, game: play } = game
+    const { themes, covers, genres, platforms, companies, modes, similar_games, videos, screenshots, franchises, player_perspectives, collections, game: play } = game
     const hero = { themes, covers, genres, videos, screenshots, play }
     const media = { videos, screenshots }
     const overview = { play }
-    const details = { themes, genres, platforms, companies, modes, franchises, collections, play }
+    const details = { themes, genres, platforms, companies, modes, franchises, player_perspectives, collections, play }
     const ratings = { play }
     const similarGames = { similar_games }
     const company_values = { companies }
 
     return (
         <div className={styles.gamePage}>
-            {/* <Image src={covers?.[0]?.url} width={500} height={500} className={styles.coverImage} alt={''} /> */}
+            <Image src={covers?.[0]?.url} width={500} height={500} className={styles.coverImage} alt={''} />
             <div className={styles.content}>
                 <Hero data={hero} />
                 <Navigation />
-                <Screenshots data={media} />
-                <Videos data={media} />
                 <Overview data={overview} />
+                <Screenshots data={media} />
 
                 <Details data={details} />
                 <Ratings data={ratings} />
                 <Company data={company_values} />
+                <Videos data={media} />
                 <Recommendations data={similarGames} />
             </div>
         </div>

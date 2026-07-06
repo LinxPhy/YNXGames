@@ -180,13 +180,29 @@ app.get('/api/game/:slug', async (req, res) => {
                         WHERE sg.id = ?;
                     `,
 
-            collections: `SELECT * FROM collections c
-                    LEFT JOIN game_collections gc ON c.id = gc.collection
-                    WHERE gc.id = ?;`,
+            collections: `SELECT g.id, g.name, g.slug, c.url, c.width, c.height
+                        FROM game_collections gc
+                        LEFT JOIN games g ON g.id = gc.id
+                        LEFT JOIN covers c on g.cover = c.id
+                        WHERE gc.collection IN (
+                            SELECT collection
+                            FROM game_collections
+                            WHERE id = ?
+                        )
+                        ORDER BY g.first_release_date;
+                    `,
 
-            franchises: `SELECT * FROM franchises f
-                    LEFT JOIN game_franchises gf ON f.id = gf.franchise
-                    WHERE gf.id = ?;`,
+            franchises: `SELECT g.id, g.name, g.slug, c.url, c.width, c.height
+                    FROM game_franchises gf
+                    LEFT JOIN games g ON g.id = gf.id
+                    LEFT JOIN covers c on g.cover = c.id
+                    WHERE gf.franchise IN (
+                        SELECT franchise
+                        FROM game_franchises
+                        WHERE id = ?
+                    )
+                    ORDER BY g.first_release_date;
+                    `,
 
             player_perspectives: `SELECT pp.id, pp.name FROM games g
                     LEFT JOIN game_player_perspectives gpp ON g.id = gpp.id

@@ -35,7 +35,7 @@ export default function Screenshots({ data }: { data: any }) {
                     </div>
                 </Carousel>
             </div>
-            {modal && <Modal data={screenshots} media={selectedMedia} modal={modal} setModal={setModal} />}
+            {modal && <Modal data={screenshots} media={selectedMedia} type="screenshot" modal={modal} setModal={setModal} />}
         </>
     )
 

@@ -124,6 +124,15 @@ interface Game {
     genre: string;
 }
 
+interface PlayerPerspective {
+    id: number;
+    name: string;
+    slug: string;
+    url: string;
+    created_at: Date;
+    updated_at: Date;
+}
+
 interface GameProps {
     game: Game[],
     themes: Theme[],
@@ -137,4 +146,5 @@ interface GameProps {
     franchises: Franchise[],
     collections: Collection[],
     similar_games: Game[],
+    player_perspectives: PlayerPerspective[],
 }

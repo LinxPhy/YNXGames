@@ -21,3 +21,14 @@
     line-height: 1.3rem;
     color: var(--light)
 }
+
+.readMore{
+    color: var(--primary);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.readMore:hover{
+    text-decoration: underline;
+}

@@ -5,7 +5,7 @@ import formatDateTime from '@/app/components/formatDateTime'
 
 export default function Details({ data }: { data: any }) {
 
-    const { themes, genres, platforms, companies, modes, franchises, collections, play } = data
+    const { themes, genres, platforms, companies, modes, franchises, collections, play, player_perspectives } = data
 
     return (
         <div className={styles.details}>
@@ -58,6 +58,14 @@ export default function Details({ data }: { data: any }) {
                         <h4>Franchises:</h4>
                     </div>
                     <p>{franchises?.map((franchise: any) => franchise.name).join(', ')}</p>
+                </div>
+
+                <div className={styles.item}>
+                    <div className={styles.itemHeader}>
+                        <Image src="/icons/perspective.png" width={20} height={20} alt="perspective" />
+                        <h4>Player Perspectives:</h4>
+                    </div>
+                    <p>{player_perspectives?.map((perspective: any) => perspective.name).join(', ')}</p>
                 </div>
 
                 <div className={styles.item}>
