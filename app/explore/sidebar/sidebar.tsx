@@ -1,7 +1,7 @@
 'use client'
 import { useContext, useState } from 'react';
 import styles from './sidebar.module.css'
-import TwoRange from '../range/range';
+import TwoRange from './range';
 import { ExploreContextProvider } from '@/app/explore/exploreContext';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -79,9 +79,9 @@ export default function Sidebar(
             params.set('search_type', filters.search_type);
         }
 
-        if (filters.unknown_releases) {
-            params.set('unknown_releases', filters.unknown_releases);
-        }
+        // if (filters.unknown_releases) {
+        // }
+        params.set('unknown_releases', filters.unknown_releases);
 
         router.push(`${pathname}?${params.toString()}`);
 
@@ -119,12 +119,12 @@ export default function Sidebar(
                 <button className={styles.clear} onClick={ClearFilters}>Clear</button>
                 {filters.search_type == 'exact' ? (
                     <>
-                        <button className={styles.clear} onClick={() => { HandleSearchType('similar'); setFilters({ ...filters, search_type: 'similar' }) }}>Exact Matches</button>
+                        <button className={styles.clear} onClick={() => {  setFilters({ ...filters, search_type: 'similar' }) }}>Exact Matches</button>
                         <span style={{ textAlign: 'center' }}>Match all selected filters</span>
                     </>
                 ) :
                     <>
-                        <button className={styles.clear} onClick={() => { HandleSearchType('exact'); setFilters({ ...filters, search_type: 'exact' }) }}>Similar Matches</button>
+                        <button className={styles.clear} onClick={() => {  setFilters({ ...filters, search_type: 'exact' }) }}>Similar Matches</button>
                         <span style={{ textAlign: 'center' }}>Match any selected filters</span>
                     </>
                 }
@@ -208,7 +208,7 @@ export default function Sidebar(
             </div>
             <div>
                 <div className={styles.dropdownHeader} onClick={() => toggleSection('company')}>
-                    <h4>Company</h4>
+                    <h4>Famous Companies</h4>
                     <span>{OpenSections.company ? "▼" : "▶"}</span>
                 </div>
 
