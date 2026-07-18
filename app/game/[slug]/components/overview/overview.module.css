@@ -9,6 +9,7 @@
     background-color: var(--dark);
     border-radius: 0.5rem;
     scroll-margin-top: 150px;
+    width: 100%;
 }
 
 .overview h3{

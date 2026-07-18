@@ -21,6 +21,8 @@ export default function Game({ game }: { game: GameProps }) {
     const similarGames = { similar_games }
     const company_values = { companies }
 
+    // collections / franchises
+
     return (
         <div className={styles.gamePage}>
             {/* <Image src={covers?.[0]?.url} width={500} height={500} className={styles.coverImage} alt={''} /> */}
