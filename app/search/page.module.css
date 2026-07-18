@@ -44,7 +44,8 @@
 }
 
 .searchResults img{
-    width: 200px;
+    /* width: 200px; */
+    width: clamp(150px, 20vw, 200px);
     aspect-ratio: 1/1;
     object-fit: cover;
 }

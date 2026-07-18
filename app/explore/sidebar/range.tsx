@@ -7,7 +7,6 @@ import { ExploreContextProvider } from "@/app/explore/exploreContext";
 export default function TwoRange({ initial_year, final_year }: { initial_year: number, final_year: number }) {
 
     const { filters, setFilters }: any = useContext(ExploreContextProvider);
-    console.log(filters)
 
     const [values, setValues] = useState([filters.initial_year, filters.final_year]);
     const [mounted, setMounted] = useState(false);

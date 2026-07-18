@@ -79,37 +79,25 @@ export default function Sidebar(
             params.set('search_type', filters.search_type);
         }
 
-        // if (filters.unknown_releases) {
-        // }
         params.set('unknown_releases', filters.unknown_releases);
 
         router.push(`${pathname}?${params.toString()}`);
 
     }
 
-    function HandleSearchType(type: string) {
-
-        const params = new URLSearchParams(searchParams.toString());
-        // update params not replace
-
-        params.set('search_type', type);
-        router.replace(`${pathname}?${params.toString()}`);
-
-    }
-
     function ClearFilters() {
 
-        setFilters({ 
-                genre: [], 
-                platform: [], 
-                company: [], 
-                theme: [], 
-                mode: [], 
-                initial_year: initial_year, 
-                final_year: final_year, 
-                search_type: 'exact', 
-                unknown_releases: true 
-            });
+        setFilters({
+            genre: [],
+            platform: [],
+            company: [],
+            theme: [],
+            mode: [],
+            initial_year: initial_year,
+            final_year: final_year,
+            search_type: 'exact',
+            unknown_releases: true
+        });
     }
 
     return (
@@ -119,12 +107,12 @@ export default function Sidebar(
                 <button className={styles.clear} onClick={ClearFilters}>Clear</button>
                 {filters.search_type == 'exact' ? (
                     <>
-                        <button className={styles.clear} onClick={() => {  setFilters({ ...filters, search_type: 'similar' }) }}>Exact Matches</button>
+                        <button className={styles.clear} onClick={() => { setFilters({ ...filters, search_type: 'similar' }) }}>Exact Matches</button>
                         <span style={{ textAlign: 'center' }}>Match all selected filters</span>
                     </>
                 ) :
                     <>
-                        <button className={styles.clear} onClick={() => {  setFilters({ ...filters, search_type: 'exact' }) }}>Similar Matches</button>
+                        <button className={styles.clear} onClick={() => { setFilters({ ...filters, search_type: 'exact' }) }}>Similar Matches</button>
                         <span style={{ textAlign: 'center' }}>Match any selected filters</span>
                     </>
                 }
@@ -138,10 +126,6 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.genre ? styles.open : styles.closed}`}>
                     <ul>
                         {Genres && Genres.map((genre: Genre) => (
-                            // <li key={genre.id} onClick={() => setFilters({ ...filters, genre: filters.genre.includes(genre.id) ? filters.genre.filter((id: number) => id !== genre.id) : [...filters.genre, genre.id] })} >
-                            //     <input type="checkbox" id={genre.id.toString()} defaultChecked={filters.genre.includes(genre.id)} name={genre.name} value={genre.id} />
-                            //     <label htmlFor={genre.id.toString()}>{genre.name}</label>
-                            // </li>
                             <li key={genre.id}>
                                 <input
                                     type="checkbox" id={genre.id.toString()} checked={filters.genre.includes(genre.id)}
@@ -180,10 +164,6 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.platform ? styles.open : styles.closed}`}>
                     <ul>
                         {platforms && platforms.map((platform: Platform) => (
-                            // <li key={platform.id} onClick={() => setFilters({ ...filters, platform: filters.platform.includes(platform.id) ? filters.platform.filter((id: number) => id !== platform.id) : [...filters.platform, platform.id] })}>
-                            //     <input type="checkbox" id={platform.id.toString()} defaultChecked={filters.platform.includes(platform.id)} name={platform.name} value={platform.id} />
-                            //     <label htmlFor={platform.id.toString()}>{platform.name}</label>
-                            // </li>
                             <li key={platform.id}>
                                 <input
                                     type="checkbox"
@@ -215,10 +195,6 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.company ? styles.open : styles.closed}`}>
                     <ul>
                         {Companies && Companies.map((company: Company) => (
-                            // <li key={company.id} onClick={() => setFilters({ ...filters, company: filters.company.includes(company.id) ? filters.company.filter((id: number) => id !== company.id) : [...filters.company, company.id] })}>
-                            //     <input type="checkbox" id={company.id.toString()} defaultChecked={filters.company.includes(company.id)} name={company.name} value={company.id} />
-                            //     <label htmlFor={company.id.toString()}>{company.name}</label>
-                            // </li>
                             <li key={company.id}>
                                 <input
                                     type="checkbox"
@@ -267,10 +243,6 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.theme ? styles.open : styles.closed}`}>
                     <ul>
                         {Themes && Themes.map((theme: Theme) => (
-                            // <li key={theme.id} onClick={() => setFilters({ ...filters, theme: filters.theme.includes(theme.id) ? filters.theme.filter((id: number) => id !== theme.id) : [...filters.theme, theme.id] })}>
-                            //     <input type="checkbox" id={theme.id.toString()} defaultChecked={filters.theme.includes(theme.id)} name={theme.name} value={theme.id} />
-                            //     <label htmlFor={theme.id.toString()}>{theme.name}</label>
-                            // </li>
                             <li key={theme.id}>
                                 <input
                                     type="checkbox"
@@ -309,10 +281,6 @@ export default function Sidebar(
                 <div className={`${styles.dropdown} ${OpenSections.mode ? styles.open : styles.closed}`}>
                     <ul>
                         {modes && modes.map((mode: Mode) => (
-                            // <li key={mode.id} onClick={() => setFilters({ ...filters, mode: filters.mode.includes(mode.id) ? filters.mode.filter((id: number) => id !== mode.id) : [...filters.mode, mode.id] })}>
-                            //     <input type="checkbox" id={mode.id.toString()} defaultChecked={filters.mode.includes(mode.id)} name={mode.name} value={mode.id} />
-                            //     <label htmlFor={mode.id.toString()}>{mode.name}</label>
-                            // </li>
                             <li key={mode.id}>
                                 <input
                                     type="checkbox"

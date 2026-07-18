@@ -4,9 +4,10 @@
     max-width: 1680px;
     width: 100%;
     margin: 0 auto;
-    
     display: flex;
     gap: 1rem;
+    padding: 0 1rem;
+    
 }
 
 .explore{
@@ -180,4 +181,12 @@
 
 .navigation button:hover span{
     color: var(--primary);
+}
+
+@media screen and (width < 769px) {
+    
+    .content{
+        flex-direction: column;
+    }
+
 }

@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import Sidebar from "./sidebar/sidebar";
+import MobileSideBar from "./sidebar/mobile_sidebar";
 
 export default function NavBar({ data }: any) {
 
@@ -25,7 +26,8 @@ export default function NavBar({ data }: any) {
 
     return (
         <>
-            {mobileSidebarOpen === true ? <div></div> : (
+            {mobileSidebarOpen === true ? 
+                <MobileSideBar genres={genres} platforms={platforms} companies={companies} themes={themes} modes={modes} initial_year={initial_year} final_year={final_year} /> : (
                 <Sidebar genres={genres} platforms={platforms} companies={companies} themes={themes} modes={modes} initial_year={initial_year} final_year={final_year} />
             )}
 
