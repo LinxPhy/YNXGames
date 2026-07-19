@@ -13,7 +13,6 @@
 
     /* IE/Edge Legacy */
     -ms-overflow-style: none;
-    touch-action: pan-x;
 }
 
 /* hide scrollbar */
