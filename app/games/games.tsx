@@ -13,8 +13,6 @@ const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 const getGames = async (option: string, pageParam: number, type: string, genres: any, themes: any) => {
 
-    // const getType = genres.find((genre: any) => genre.slug === option)?  || themes.find((theme: any) => theme.slug === option)?.id
-
     const getType = genres.find((genre: any) => genre.slug === option) ? 'genre' : themes.find((theme: any) => theme.slug === option) ? 'theme' : ''
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/return_games/${option}?` +
@@ -24,8 +22,6 @@ const getGames = async (option: string, pageParam: number, type: string, genres:
         })
     );
 
-    // add delay
-    // await new Promise((resolve) => setTimeout(resolve, 100000));
     return response.json();
 
 }

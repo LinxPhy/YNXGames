@@ -1,5 +1,6 @@
 import Sidebar from "./sidebar"
 import styles from './page.module.css'
+import { Suspense } from "react";
 import { GamesContext } from "./gamesContext";
 
 export default async function GamesLayout({ children }: { children: React.ReactNode }) {
@@ -13,7 +14,9 @@ export default async function GamesLayout({ children }: { children: React.ReactN
     return (
         <div className={styles.container}>
             <GamesContext options={data}>
-                <Sidebar />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Sidebar />
+                </Suspense>
                 <>{children}</>
             </GamesContext>
         </div>
