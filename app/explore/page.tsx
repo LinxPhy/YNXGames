@@ -4,6 +4,7 @@ import Sidebar from './sidebar/sidebar';
 import Explore from './explore';
 import { ExploreContext } from './exploreContext';
 import NavBar from './navBar';
+import { Suspense } from 'react';
 
 export default async function ExplorePage() {
 
@@ -14,10 +15,12 @@ export default async function ExplorePage() {
 
     return (
         <div className={styles.content}>
-            <ExploreContext min={initial_year} max={final_year}>
-                <NavBar data={data} />
-                <Explore  />
-            </ExploreContext>
+            <Suspense fallback={<div>Loading...</div>}>
+                <ExploreContext min={initial_year} max={final_year}>
+                    <NavBar data={data} />
+                    <Explore />
+                </ExploreContext>
+            </Suspense>
         </div>
     )
 
