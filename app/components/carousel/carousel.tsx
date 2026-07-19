@@ -1,13 +1,15 @@
 'use client'
+import { useMediaQuery } from 'usehooks-ts';
 import useEmblaCarousel from 'embla-carousel-react';
-import styles from './carousel.module.css'
 import { useEffect, useState } from 'react';
+import styles from './carousel.module.css'
 
 export default function Carousel(
     { children }:
         { children: React.ReactNode }
 ) {
 
+    const isDesktop = useMediaQuery('(width < 768px)');
 
     const [canScrollPrev, setCanScrollPrev] = useState(false);
     const [canScrollNext, setCanScrollNext] = useState(false);
@@ -15,7 +17,8 @@ export default function Carousel(
         align: 'start',
         slidesToScroll: 'auto',
         containScroll: 'trimSnaps',
-        loop: true
+        loop: true,
+        active: isDesktop,
     });
 
     useEffect(() => {

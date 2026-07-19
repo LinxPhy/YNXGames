@@ -5,6 +5,21 @@
     width: 100%;
     position: relative;
     height: 100%;
+    overflow-x: scroll;
+
+    /* Firefox */
+    scrollbar-width: none;
+
+    /* IE/Edge Legacy */
+    -ms-overflow-style: none;
+}
+
+/* hide scrollbar */
+
+.viewport::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
 }
 
 .viewport .navigation{
@@ -39,4 +54,15 @@
 .right{
     top: 0;
     right: 0;
+}
+
+@media (width < 768px) {
+    /* .viewport .navigation{
+        opacity: 1;
+        pointer-events: auto;
+    } */
+
+    .viewport .navigation{
+        display: none;
+    }
 }
