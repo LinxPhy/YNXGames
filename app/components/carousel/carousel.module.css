@@ -7,11 +7,13 @@
     height: 100%;
     overflow-x: scroll;
 
+    -webkit-overflow-scrolling: touch;
     /* Firefox */
     scrollbar-width: none;
 
     /* IE/Edge Legacy */
     -ms-overflow-style: none;
+    touch-action: pan-x;
 }
 
 /* hide scrollbar */
