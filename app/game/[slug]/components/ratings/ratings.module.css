@@ -66,3 +66,12 @@
     /* one line */
     
 }
+
+@media screen and (width < 768px) {
+    
+    .ratings {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+}

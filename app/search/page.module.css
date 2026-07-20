@@ -60,6 +60,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 1rem;
+    gap: 1rem;
 }
 
 .searchResults h4{

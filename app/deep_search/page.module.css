@@ -330,3 +330,29 @@
     color: var(--white);
     
 }
+
+@media screen and (width < 768px) {
+    .submit{
+        width: 100%;
+    }
+
+    .game {
+        grid-template-columns: 1fr;
+    }
+
+    .main{
+        border-bottom: 1px solid var(--grey);
+        padding-bottom: 1rem;
+    }
+
+    .stats ul {
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .stats ul li {
+        flex-grow: 1;
+        flex-basis: 48%;
+    }
+}

@@ -20,6 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={quicksand.variable}>
+
+      <head>
+        <link rel="icon" type="image/x-icon" href="/logo_2.ico" />
+      </head>
+
       <body>
         <ReactQueryProvider>
           <div className="container">

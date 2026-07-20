@@ -52,13 +52,13 @@ export default function Details({ data }: { data: any }) {
                     <p className={styles.genres}>{genres?.map((genre: any) => genre.name).join(', ')}</p>
                 </div>
 
-                <div className={styles.item}>
+                {/* <div className={styles.item}>
                     <div className={styles.itemHeader}>
                         <Image src="/icons/franchises.png" width={20} height={20} alt="franchise" />
                         <h4>Franchises:</h4>
                     </div>
                     <p>{franchises?.map((franchise: any) => franchise.name).join(', ')}</p>
-                </div>
+                </div> */}
 
                 <div className={styles.item}>
                     <div className={styles.itemHeader}>

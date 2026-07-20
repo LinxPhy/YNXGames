@@ -1,44 +1,65 @@
-
-.navigation{
+.navigation {
     display: flex;
     gap: 1rem;
     margin-top: 2rem;
     background-color: var(--dark);
     position: sticky;
     top: 80px;
-    z-index: 999;
+    z-index: 8;
+    width: 100%;
+    overflow: hidden;
+    /* scroll x */
+    overflow-x: auto;
 }
 
-.navigation ul{
+@media screen and (width < 768px) {
+    .navigation {
+        /* Firefox */
+        scrollbar-width: none;
+
+        /* IE/Edge Legacy */
+        -ms-overflow-style: none;
+    }
+
+    .navigation::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        display: none;
+    }
+
+}
+
+
+.navigation ul {
     display: flex;
     /* gap: 1rem; */
     width: 100%;
     border-bottom: 1px solid var(--background);
 }
 
-.navigation li{
+.navigation li {
     display: flex;
     border-bottom: 4px solid transparent;
     transition: border-color 0.2s;
 }
 
-.navigation li.active{
+.navigation li.active {
     border-bottom-color: var(--primary);
 }
 
 .navigation li a {
-  
+
     padding: 1rem 2rem;
     color: var(--white);
     font-weight: 500;
     cursor: pointer;
 }
 
-.navigation li:not(:last-child){
+.navigation li:not(:last-child) {
     /* border-right: 1px solid var(--grey); */
 }
 
-.navigation li:hover{
+.navigation li:hover {
     /* background-color: var(--primary); */
     color: var(--primary);
     border-radius: .2rem;
