@@ -17,10 +17,11 @@
     margin-bottom: 1rem;
 }
 
-.overview p{
+.g p{
     font-size: 1rem;
     line-height: 1.3rem;
-    color: var(--light)
+    color: var(--light);
+    text-align: justify;
 }
 
 .readMore{
