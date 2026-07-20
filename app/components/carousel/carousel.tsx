@@ -9,7 +9,7 @@ export default function Carousel(
         { children: React.ReactNode }
 ) {
 
-    const isDesktop = useMediaQuery('(width < 768px)');
+    const isDesktop = useMediaQuery('(width > 768px)');
 
     const [canScrollPrev, setCanScrollPrev] = useState(false);
     const [canScrollNext, setCanScrollNext] = useState(false);

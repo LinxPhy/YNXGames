@@ -34,6 +34,19 @@ export default function Sidebar() {
     }
 
 
+    function handleName(name: string) {
+
+        if (name === 'Real Time Strategy (RTS)')return 'RTS'
+        else if (name === 'Role-playing (RPG)')return 'RPG'
+        else if (name === 'Turn-based strategy (TBS)')return 'TBS'
+        else if (name === "Hack and slash/Beat 'em up")return 'HnB'
+        else if (name === 'Card & Board Game')return 'Card Games'
+        else if (name === '4X (explore, expand, exploit, and exterminate)')return '4X'
+        else return name
+
+    }
+
+
     return (
         <div className={styles.sidebar}>
 
@@ -55,7 +68,7 @@ export default function Sidebar() {
 
                 <div className={styles.options} style={{ display: open === "genre" ? "flex" : "none" }}>
                     {genres.map((genre : any) => (
-                        <button key={genre.id} className={`${genre.id === check_genres ? styles.active : ""}`} onClick={(e) => {e.stopPropagation(); HandleSearchType(genre.slug)}}>{genre.name}</button>
+                        <button key={genre.id} className={`${genre.id === check_genres ? styles.active : ""}`} onClick={(e) => {e.stopPropagation(); HandleSearchType(genre.slug)}}>{handleName(genre.name)}</button>
                     ))}
                 </div>
             </div>
@@ -67,7 +80,7 @@ export default function Sidebar() {
 
                 <div className={styles.options} style={{ display: open === "theme" ? "flex" : "none" }}>
                     {themes.map((theme : any) => (
-                        <button key={theme.id} className={`${theme.id === check_themes ? styles.active : ""}`} onClick={(e) => {e.stopPropagation(); HandleSearchType(theme.slug)}}>{theme.name}</button>
+                        <button key={theme.id} className={`${theme.id === check_themes ? styles.active : ""}`} onClick={(e) => {e.stopPropagation(); HandleSearchType(theme.slug)}}>{handleName(theme.name)}</button>
                     ))}
                 </div>
             </div>

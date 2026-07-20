@@ -33,6 +33,18 @@ export default function Games() {
     const option: any = searchParams.get('search_type')
     const { genres, themes }: any = useContext(GamesContextProvider)
 
+    function HandleSearchName(name: string){
+
+        if (!name) return ""
+        
+        let new_name = decodeURIComponent(name).replace(/%20/g, ' ');
+        new_name = new_name.charAt(0).toUpperCase() + new_name.slice(1);
+        new_name = new_name.split('-').join(' ');
+        new_name = new_name.split('_').join(' ');
+
+        return new_name
+    }
+
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching, isLoading, error } = useInfiniteQuery({
         queryKey: ['games', option],
         queryFn: ({ pageParam = 1 }) => getGames(option, pageParam, "", genres, themes),
@@ -59,6 +71,9 @@ export default function Games() {
 
     return (
         <div className={styles.gamesContainer}>
+
+            <h2>{HandleSearchName(option)}</h2>
+
             <InfiniteScrollContainer onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()} >
                 <div className={styles.games}>
                     {games && games?.map((game: Game) => (

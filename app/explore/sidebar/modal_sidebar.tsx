@@ -2,6 +2,7 @@
 import { useContext, useState } from 'react';
 import { ExploreContextProvider } from '@/app/explore/exploreContext';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import toast from "react-hot-toast";
 import Image from 'next/image';
 import styles from './mobile_sidebar.module.css'
 import TwoRange from './range';
@@ -19,9 +20,13 @@ export default function ModalSidebar({ setModal, genres, platforms, companies, t
 
     const { filters, setFilters }: any = useContext(ExploreContextProvider);
 
-    const [Genres, setGenres] = useState(genres.slice(0, 5));
-    const [Companies, setCompanies] = useState(companies.slice(0, 5));
-    const [Themes, setThemes] = useState(themes.slice(0, 5));
+    // const [Genres, setGenres] = useState(genres.slice(0, 5));
+    // const [Companies, setCompanies] = useState(companies.slice(0, 5));
+    // const [Themes, setThemes] = useState(themes.slice(0, 5));
+
+    const [Genres, setGenres] = useState(genres);
+    const [Companies, setCompanies] = useState(companies);
+    const [Themes, setThemes] = useState(themes);
 
     const [OpenSections, setOpenSections] = useState({
         genre: true,
@@ -83,6 +88,7 @@ export default function ModalSidebar({ setModal, genres, platforms, companies, t
 
         router.push(`${pathname}?${params.toString()}`);
 
+        toast.success('Filters applied');
         setModal(false);
     }
 
@@ -99,10 +105,16 @@ export default function ModalSidebar({ setModal, genres, platforms, companies, t
             search_type: 'exact',
             unknown_releases: true
         });
+
+        toast.success('Filters cleared');
     }
 
     return (
         <div className={styles.modal}>
+            <div className={styles.modalHeader} onClick={() => setModal(false)}>
+                <h3>Filters</h3>
+                <Image src="/icons/close.png" width={20} height={20} alt="close"  />
+            </div>
             <div>
                 <div className={styles.dropdownHeader} onClick={() => toggleSection('genre')}>
                     <div>
@@ -132,12 +144,12 @@ export default function ModalSidebar({ setModal, genres, platforms, companies, t
                         ))}
                     </ul>
 
-                    <div style={{ display: OpenSections.genre ? 'block' : 'none' }} className={styles.showMore}>
+                    {/* <div style={{ display: OpenSections.genre ? 'block' : 'none' }} className={styles.showMore}>
                         {Genres.length != genres.length ?
                             <span onClick={() => setGenres(genres)}>▼ Show More</span> :
                             <span onClick={() => setGenres(genres.slice(0, 5))}>▲ Show Less</span>
                         }
-                    </div>
+                    </div> */}
                 </div>
 
             </div>
@@ -200,12 +212,12 @@ export default function ModalSidebar({ setModal, genres, platforms, companies, t
                         ))}
                     </ul>
 
-                    <div style={{ display: OpenSections.company ? 'block' : 'none' }} className={styles.showMore}>
+                    {/* <div style={{ display: OpenSections.company ? 'block' : 'none' }} className={styles.showMore}>
                         {Companies.length != companies.length ?
                             <span onClick={() => setCompanies(companies)}>▼ Show More</span> :
                             <span onClick={() => setCompanies(companies.slice(0, 5))}>▲ Show Less</span>
                         }
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div>
@@ -252,12 +264,12 @@ export default function ModalSidebar({ setModal, genres, platforms, companies, t
                         ))}
                     </ul>
 
-                    <div style={{ display: OpenSections.theme ? 'block' : 'none' }} className={styles.showMore}>
+                    {/* <div style={{ display: OpenSections.theme ? 'block' : 'none' }} className={styles.showMore}>
                         {Themes.length != themes.length ?
                             <span onClick={() => setThemes(themes)}>▼ Show More</span> :
                             <span onClick={() => setThemes(themes.slice(0, 5))}>▲ Show Less</span>
                         }
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div>
@@ -295,11 +307,11 @@ export default function ModalSidebar({ setModal, genres, platforms, companies, t
                     <button className={styles.reset} onClick={ClearFilters}>Reset Filters</button>
                     {filters.search_type == 'exact' ? (
                         <>
-                            <button className={styles.reset} onClick={() => { setFilters({ ...filters, search_type: 'similar' }) }}>Exact Matches</button>
+                            <button className={styles.reset} onClick={() => { setFilters({ ...filters, search_type: 'similar' }); toast.success('Switched to Similar Matches') }}>Exact Matches</button>
                         </>
                     ) :
                         <>
-                            <button className={styles.reset} onClick={() => { setFilters({ ...filters, search_type: 'exact' }) }}>Similar Matches</button>
+                            <button className={styles.reset} onClick={() => { setFilters({ ...filters, search_type: 'exact' }); toast.success('Switched to Exact Matches') }}>Similar Matches</button>
                         </>
                     }
                 </div>

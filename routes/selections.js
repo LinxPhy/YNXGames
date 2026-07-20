@@ -261,11 +261,15 @@ app.get('/api/return_games/:search_type', async (req, res) => {
 
         const games = response.slice(0, limit);
         const hasMore = response.length > limit;
+        console.log(games)
 
         games.forEach((game) => {
             game.image = game.image
                 ? `https:${game.image.replace('t_thumb', 't_1080p')}`
                 : game.image
+            game.total_rating = game.total_rating
+                ? (game.total_rating / 20).toFixed(1)
+                : game.total_rating
         });
 
         res.json({ games, hasMore, nextPage: parseInt(page) + 1 });

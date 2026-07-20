@@ -2,6 +2,7 @@
 import { useContext, useState } from 'react';
 import styles from './sidebar.module.css'
 import TwoRange from './range';
+import toast from "react-hot-toast";
 import { ExploreContextProvider } from '@/app/explore/exploreContext';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -81,6 +82,7 @@ export default function Sidebar(
 
         params.set('unknown_releases', filters.unknown_releases);
 
+        toast.success('Filters applied');
         router.push(`${pathname}?${params.toString()}`);
 
     }
@@ -98,6 +100,8 @@ export default function Sidebar(
             search_type: 'exact',
             unknown_releases: true
         });
+
+        toast.success('Filters cleared');
     }
 
     return (
@@ -107,12 +111,12 @@ export default function Sidebar(
                 <button className={styles.clear} onClick={ClearFilters}>Clear</button>
                 {filters.search_type == 'exact' ? (
                     <>
-                        <button className={styles.clear} onClick={() => { setFilters({ ...filters, search_type: 'similar' }) }}>Exact Matches</button>
+                        <button className={styles.clear} onClick={() => { setFilters({ ...filters, search_type: 'similar' }); toast.success('Switched to Similar Matches') }}>Exact Matches</button>
                         <span style={{ textAlign: 'center' }}>Match all selected filters</span>
                     </>
                 ) :
                     <>
-                        <button className={styles.clear} onClick={() => { setFilters({ ...filters, search_type: 'exact' }) }}>Similar Matches</button>
+                        <button className={styles.clear} onClick={() => { setFilters({ ...filters, search_type: 'exact' }); toast.success('Switched to Exact Matches') }}>Similar Matches</button>
                         <span style={{ textAlign: 'center' }}>Match any selected filters</span>
                     </>
                 }

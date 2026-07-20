@@ -44,6 +44,10 @@
 }
 
 .gamesHeader button{
+
+    /* appearance: none;
+    -webkit-appearance: none; */
+
     background-color: var(--background);
     border: none;
     color: var(--white);

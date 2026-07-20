@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import styles from './mobile_sidebar.module.css'
 import ModalSidebar from './modal_sidebar';
+import Image from 'next/image';
 
 export default function MobileSideBar({ genres, platforms, companies, themes, modes, initial_year, final_year }: {
     genres: Genre[],
@@ -42,7 +43,9 @@ export default function MobileSideBar({ genres, platforms, companies, themes, mo
 
     return (
         <>
-            <button className={styles.apply} onClick={() => setModal(true)}>Filters</button>
+            <button className={styles.mobileButton} onClick={() => setModal(true)}>
+                View Filters
+            </button>
             {modal && <div className={styles.overlay} onClick={() => setModal(false)} />}
             {modal && <ModalSidebar setModal={setModal} genres={genres} platforms={platforms} companies={companies} themes={themes} modes={modes} initial_year={initial_year} final_year={final_year} />}
         </>
